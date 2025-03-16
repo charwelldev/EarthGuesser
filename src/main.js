@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
+import textureSvg from "/textures/map_no_countries.svg"
 
 import countriesData from '/src/assets/countries/tesselations.json' with { type: "json" };
 import extraCountriesData from '/src/assets/countries/delaunay.json' with { type: "json" };
@@ -1294,7 +1295,7 @@ async function loadPolyCountries(manager, countriesExtraData = extraCountriesDat
 async function loadResources() {
     console.log("loadResources - Starting...");
     try {
-        const svgId = '/textures/map_no_countries.svg';
+        const svgId = textureSvg;
         const countriesId = 'loading-countries';
         const countriesExtraId = 'loading-countries-extra';
         loadingManager.itemStart(svgId);
