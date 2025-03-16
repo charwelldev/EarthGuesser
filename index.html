@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Antipodes graphic visualization</title>
+  <link rel="icon" href="./src/assets/images/favicon-def.png">
+  <link href="./src/css/output.css" rel="stylesheet">
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <script src="/poly2tri.min.js"></script>
+
+
+</head>
+
+<body class="font-raleway bg-scenebackgroundcolor">
+
+  <div class="md:flex md:flex-row bg-scenebackgroundcolor flex-col block" id="main_container">
+
+    <div id="sub_container" class="md:w-1/4 md:max-h-full md:flex md:flex-col md:items-center md:justify-center w-full h-full">
+
+      <div
+        class="p-4 w-full bg-gray-50 border-2 border-cyansky border-solid rounded-lg md:flex md:flex-row md:justify-between md:mb-6 ">
+        <div class="flex flex-row md:flex-1 justify-center">
+          <a href="/" class="-m-1.5 p-1.5">
+            <!-- <img class="h-1/3 w-auto" src="./assets/logo-def.png" alt=""> -->
+
+            <ul class="inline-block text-3xl text-transparent bg-conic-180 from-bluesky to-cyansky bg-clip-text">
+              <li class="inline-block">Earth</li>
+              <li class="inline-block oval-gradient"></li>
+              <li class="inline-block">Guesser</li>
+            </ul>
+          </a>
+        </div>
+
+      </div>
+
+      <div
+        class="p-2 w-full bg-gray-50 border-2 border-cyansky text-center border-solid rounded-lg flex flex-row justify-center mb-6">
+        <div class="text-xl  bg-gradient-to-r from-cyansky to-cyansky bg-clip-text text-transparent">
+          Remaining attempts: </div>
+        <div class="text-xl  bg-gradient-to-r from-cyansky to-red-600 bg-clip-text text-transparent " id="countTries">9
+        </div>
+      </div>
+        <div class="overflow-hidden p-4 w-full bg-gray-50 border-2 border-cyansky border-solid rounded-lg md:flex md:flex-col md:justify-between md:mb-6">
+          <div class="text-2xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent">
+            Place the countries on the globe </div>
+            <div
+            class="text-2xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent mt-2 mb-2">
+            corresponding to today's clues</div>
+
+
+          <!-- <span class="text-4xl text-center bg-gradient-to-t from-gray-600 to-cyansky bg-clip-text text-transparent mt-4"></span> -->
+
+          <div class="flex flex-row justify-center ">
+            <div class="flex flex-col justify-center p-2 text-1xl rounded-lg m-2 " id="questions">
+              <div id="q0" class="mt-2 mb-2 p-2 rounded-lg bg-gray-200 flex flex-col justify-items-center"></div>
+              <div id="q1" class="mt-2 mb-2 p-2 rounded-lg bg-gray-200 flex flex-col justify-items-center"></div>
+              <div id="q2" class="mt-2 mb-2 p-2 rounded-lg bg-gray-200 flex flex-col justify-items-center"></div>
+              <div id="q3" class="mt-2 mb-2 p-2 rounded-lg bg-gray-200 flex flex-col justify-items-center"></div>
+            </div>
+            <ul class="mt-2 justify-between" id="answers">
+              <!-- Dynamically generated -->
+            </ul>
+          </div>
+          <div id="results"
+            class="text-xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent mt-4 mb-4"
+            style="visibility: hidden;">
+            Resultados<br> </div>
+        </div>
+
+        <div class="p-1 text-xl mt-1 mb-1 text-center bg-gray-100 md:hidden">
+          <button id="scroll" class="text-center mt-4 mb-4 md:hidden" onclick="scrollToCanvas()">
+            Scroll to canvas
+          </button>
+        </div>
+    </div>
+
+
+    <div id="earthCanvas" class="w-full h-full md:w-3/4 relative">
+      <div class="absolute top-0 right-0 z-10" id="gui-container"></div>
+      <div id="loader" class="absolute top-0 left-0 w-full h-full flex justify-center items-center z-50 flex-shrink-0">
+        <div class="spinner"></div>
+      </div>
+      <button id="scroll-button" class="md:hidden" onclick="scrollToQuestions()">See questions</button>
+      <div id="info-link">
+        <!-- <a id="" class="text-yellow-300" href="https://threejs.org/" target="_blank">ThreeJS</a> project</br> -->
+        Data source
+        <a class="text-orange-500" href="https://es.vecteezy.com/vectores-gratis"> Vectores por Vecteezy</a>
+      </div>
+    </div>
+
+  </div>
+  <script type="module" src="src/main.js"></script>
+
+</body>
+<script>
+
+  // Scroll to 3D Canvas
+  function scrollToCanvas() {
+    const yOffset = 0;
+    const element = document.getElementById("earthCanvas");
+    const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' })
+    //document.getElementById("earthCanvas").scrollIntoView({block: "start", behavior: "smooth"});
+  }
+
+    // Scroll to 3D Canvas
+    function scrollToQuestions() {
+    const yOffset = 0;
+    const element = document.getElementById("sub_container");
+    const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' })
+    //document.getElementById("earthCanvas").scrollIntoView({block: "start", behavior: "smooth"});
+  }
+
+</script>
+
+<!-- <script src="https://rawgithub.com/mrdoob/three.js/r104/examples/js/utils/BufferGeometryUtils.js"></script> -->
+<!-- <script src="https://unpkg.com/poly2tri@0.5.1/dist/poly2tri.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/poly2tri@0.5.1/dist/poly2tri.min.js"></script> -->
+
+
+
+</html>

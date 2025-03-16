@@ -1,0 +1,9 @@
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+    build: {
+        outDir: 'dist', // Output folder
+        assetsDir: 'src',  // Keep assets in the root of dist
+    },
+    base: '/' // Replace with your GitHub repo name for correct paths
+});
