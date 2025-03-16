@@ -90,8 +90,8 @@ body {
     background-origin: padding-box, border-box;
 
     /* Other styles */
-    width: 70px;
-    height: 36px;
+    width: 4.375rem;
+    height: 2.25rem;
     rotate: 45deg;
     animation: spin 2s linear infinite;
 }
