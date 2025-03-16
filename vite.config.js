@@ -5,5 +5,5 @@ export default defineConfig({
         outDir: 'dist', // Output folder
         assetsDir: 'src',  // Keep assets in the root of dist
     },
-    base: '/' // Replace with your GitHub repo name for correct paths
+    base: '/EarthGuesser' // Replace with your GitHub repo name for correct paths
 });
