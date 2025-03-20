@@ -401,6 +401,13 @@ function initScene() {
         return objectsToRaycast;
     }
 
+    function markLastCountrySelected(selectedId) {
+
+        const c = document.getElementById('lastCountrySelected');
+        c.innerHTML = indicesMap[selectedId];
+
+    }
+
     //Dynamically highlight the correct answers
     function markQuizQuestions(selectedId) {
 
@@ -422,14 +429,14 @@ function initScene() {
     }
 
     function markQuizQuestionMobile(selectedId) {
-        
+
         CountrySelected.forEach((country) => {
             if (country == selectedId) {
                 // DEBUG console.log("Solutions", solutions);
                 solutions.forEach((solution) => {
                     var idx = solutions.indexOf(solution);
                     if (solution == selectedId && solution == country) {
-                        const lastCorrect = document.getElementById("clue"+idx)
+                        const lastCorrect = document.getElementById("clue" + idx)
                         lastCorrect.className = 'text-xl text-green-500 p-2';
                     }
                 })
@@ -440,7 +447,7 @@ function initScene() {
     }
 
     function markWrongQuizQuestionsMobile(selectedId) {
-        
+
         //const questions = document.getElementById('questions');
         solutions.forEach((solution, index) => {
             if (CountrySelected.includes(solution)) {
@@ -460,7 +467,7 @@ function initScene() {
                 // DEBUG console.log("No pintar");
             } else {
                 const q = document.getElementById('q' + index);
-                q.className = 'p-2 text-1xl rounded-lg border-1 border-amber-50 text-white m-2 bg-red-400 justify-items-center';
+                q.className = 'p-2 text-1xl rounded-lg border-1 border-amber-50 text-black m-2 bg-yellow-200 justify-items-center';
             }
         });
 
@@ -471,11 +478,9 @@ function initScene() {
         try {
             //const questions = document.getElementById('questions');
             questions.forEach((question, index) => {
-                const q = document.getElementById('q' + index);
-                const res = document.createElement('div');
-                res.innerHTML = indicesMap[question[[2]]];
-                res.className = 'items-center mt-1 mb-1 p-1 rounded-lg border-1 border-amber-50 text-white bg-scenebackgroundcolor ';
-                q.append(res);
+                const q = document.getElementById('q' + index + 'a');
+                q.className = "mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white";
+                q.innerHTML = indicesMap[question[[2]]];
                 // DEBUG console.log(respuesta, q);
             });
 
@@ -571,14 +576,12 @@ function initScene() {
                 // DEBUG console.log(clicked.name);
                 // DEBUG console.log(solutions);
 
+                console.log(clicked.name);
+                markLastCountrySelected(clicked.name);
+
                 // Logic if country is in the solutions
                 if (solutions.includes(clicked.name)) {
 
-                    if (!CountrySelected.includes(clicked.name)) {
-
-                        CountrySelected.push(clicked.name);
-
-                    }
 
                     if (!endGame) {
 
@@ -587,14 +590,23 @@ function initScene() {
                         clicked.position.copy(originCoordinates);
                         // CHECK clicked.parent.children[intersected.parent.children.length - 1].position.copy(originCoordinates);
 
-                        // DEBUG console.log("Dynamically change quiz");
-                        markQuizQuestions(clicked.name);
+ 
 
                         if (isMobile) {
                             addElementToAnswers(clicked.name, "lastCorrect");
                             markQuizQuestionMobile(clicked.name);
                             console.log(clicked.name);
                         }
+
+
+                        if (!CountrySelected.includes(clicked.name)) {
+
+                            CountrySelected.push(clicked.name);
+
+                        }
+
+                        // DEBUG console.log("Dynamically change quiz");
+                        markQuizQuestions(clicked.name);
 
 
                     }
@@ -772,7 +784,7 @@ function initScene() {
 
         if (type == "lastSelected") {
             const guiLastSelected = document.getElementById('showLastCorrect');
-            guiLastSelected.innerHTML = "Last wrong country: " + indicesMap[element];      
+            guiLastSelected.innerHTML = "Last wrong country: " + indicesMap[element];
 
         } else if (type == "lastCorrect") {
             const guiLastCorrect = document.getElementById('showLastSelected');

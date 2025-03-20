@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Earth guesser the game</title>
+  <title>Geography guessr game</title>
   <link rel="icon" href="./src/assets/images/favicon-def.png">
   <link href="./src/css/output.css" rel="stylesheet">
 
@@ -24,7 +24,8 @@
 
   <div class="md:flex md:flex-row bg-scenebackgroundcolor flex-col block" id="main_container">
 
-    <div id="sub_container" class="md:bg-scenebackgroundcolor md:w-1/4 md:max-h-full md:flex md:flex-col md:items-center md:justify-center hidden">
+    <div id="sub_container"
+      class="md:bg-scenebackgroundcolor md:w-1/4 md:max-h-full md:flex md:flex-col md:items-center md:justify-center hidden">
 
       <div
         class="p-4 w-full bg-scenebackgroundcolor border-2 border-cyansky border-solid rounded-lg md:flex md:flex-row md:justify-between md:mb-6 ">
@@ -33,9 +34,9 @@
             <!-- <img class="h-1/3 w-auto" src="./assets/logo-def.png" alt=""> -->
 
             <ul class="inline-block text-3xl text-transparent bg-conic-180 from-bluesky to-cyansky bg-clip-text">
-              <li class="inline-block">Geography</li>
+              <li class="inline-block">Ge</li>
               <li class="inline-block oval-gradient"></li>
-              <li class="inline-block">Guessr</li>
+              <li class="inline-block">graphy Guessr</li>
             </ul>
           </a>
         </div>
@@ -43,39 +44,76 @@
       </div>
 
       <div
-        class="p-2 w-full bg-scenebackgroundcolor border-2 border-cyansky text-center border-solid rounded-lg flex flex-row justify-center mb-6">
-        <div class="text-xl  bg-gradient-to-r from-bluesky to-cyansky bg-clip-text text-transparent">
+        class="p-2 w-full bg-scenebackgroundcolor border-2 border-cyansky text-center border-solid rounded-lg flex flex-row justify-between mb-6">
+        <div class="text-xl text-bluesky">
           Remaining attempts: </div>
         <div class="text-xl text-red-500" id="countTries">9
         </div>
       </div>
-        <div class="overflow-y-clip p-4 w-full bg-scenebackgroundcolor border-2 border-cyansky border-solid rounded-lg md:flex md:flex-col md:justify-between md:mb-6">
-          <div class="text-2xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent">
-            Guess each country on the globe using the clues</div>
+      <div
+        class="overflow-y-clip p-4 w-full bg-scenebackgroundcolor border-2 border-cyansky border-solid rounded-lg md:flex md:flex-col md:justify-between md:mb-6">
+        <div class="text-2xl text-center text-bluesky">
+          Guess each the country, on the globe, for each clue</div>
 
-          <!-- <span class="text-4xl text-center bg-gradient-to-t from-gray-600 to-cyansky bg-clip-text text-transparent mt-4"></span> -->
+        <!-- <span class="text-4xl text-center bg-gradient-to-t from-gray-600 to-cyansky bg-clip-text text-transparent mt-4"></span> -->
 
-          <div class="flex flex-row justify-center ">
-            <div class="flex flex-col justify-center p-2 text-1xl rounded-lg m-2 " id="questions">
-              <div id="q0" class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-col justify-items-center"></div>
-              <div id="q1" class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-col justify-items-center"></div>
-              <div id="q2" class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-col justify-items-center"></div>
-              <div id="q3" class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-col justify-items-center"></div>
+        <div class="flex flex-row justify-center">
+          <div class="flex flex-col justify-center p-2 text-1xl rounded-lg m-2" id="questions">
+            <div class="flex flex-row justify-between">
+              <div id="q0"
+                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
+              </div>
+              <div id="q0a"
+                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white">
+              </div>
             </div>
-            <ul class="mt-2 justify-between" id="answers">
-              <!-- Dynamically generated -->
-            </ul>
+            <div class="flex flex-row justify-between">
+              <div id="q1"
+                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
+              </div>
+              <div id="q1a"
+                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white">
+              </div>
+            </div>
+            <div class="flex flex-row justify-between">
+              <div id="q2"
+                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
+              </div>
+              <div id="q2a"
+                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white">
+              </div>
+            </div>
+            <div class="flex flex-row justify-between">
+              <div id="q3"
+                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
+              </div>
+              <div id="q3a"
+                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-whiter">
+              </div>
+            </div>
           </div>
-          <div id="results"
-            class="text-xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent mt-4 mb-4"
-            style="visibility: hidden;">
-            Score<br> </div>
+          <ul class="mt-2 justify-between" id="answers">
+            <!-- Dynamically generated -->
+          </ul>
         </div>
+        <div id="results"
+          class="text-xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent mt-4 mb-4"
+          style="visibility: hidden;">
+          Score<br> </div>
+      </div>
+      <div
+      class="p-2 w-full bg-scenebackgroundcolor border-2 border-cyansky text-center border-solid rounded-lg flex flex-row justify-between mb-6">
+      <div class="text-xl text-center text-bluesky">
+        Last country selected: </div>
+      <div class="text-xl text-white" id="lastCountrySelected"> - 
+      </div>
+    </div>
     </div>
 
 
     <div id="earthCanvas" class="w-full h-full md:w-3/4 relative">
-      <div class="md:hidden absolute top-0 left-0 z-10 bg-scenebackgroundcolor rounded-br-sm flex flex-col p-4" id="answers-container">
+      <div class="md:hidden absolute top-0 left-0 z-10 bg-scenebackgroundcolor rounded-br-sm flex flex-col p-4"
+        id="answers-container">
         <ul class="inline-block text-3xl text-transparent bg-conic-180 from-bluesky to-cyansky bg-clip-text mb-2">
           <li class="inline-block">Geography</li>
           <li class="inline-block oval-gradient-mobile"></li>
@@ -115,8 +153,8 @@
     //document.getElementById("earthCanvas").scrollIntoView({block: "start", behavior: "smooth"});
   }
 
-    // Scroll to 3D Canvas
-    function scrollToQuestions() {
+  // Scroll to 3D Canvas
+  function scrollToQuestions() {
     const yOffset = 0;
     const element = document.getElementById("sub_container");
     const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
