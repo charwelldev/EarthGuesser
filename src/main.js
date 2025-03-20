@@ -23,6 +23,8 @@ questions.forEach((item, index) => {
     div.innerHTML = item[0];
 });
 
+
+
 // Global game parameters
 var endGame = false;
 var triesCount = 9;
@@ -33,6 +35,12 @@ var isMobile = false;
 function drawTries() {
     const tries = document.getElementById('countTries');
     tries.innerHTML = triesCount;
+
+    if (isMobile) {
+        const triesMobile = document.getElementById('triesCountMobile');
+        triesMobile.innerHTML = "Remaining tries: " + triesCount;
+    }
+
 }
 
 
@@ -46,7 +54,7 @@ const hoverColor = new THREE.Color(111, 168, 220).setHex(0x6FA8DC);
 const selectedColor = new THREE.Color(0, 230, 0).setHex(0x00e600);
 const redColor = new THREE.Color(224, 102, 102).setHex(0xE06666);
 const originalColor = new THREE.Color(244, 67, 54).setHex(0xffffff);
-const yellowColor = new THREE.Color(179, 157, 81).setHex(0xb39d51);
+const yellowColor = new THREE.Color(254, 252, 191).setHex(0xfefcbf);
 const originCoordinates = new THREE.Vector3(0, 0, 0);
 
 
@@ -63,7 +71,7 @@ function initScene() {
 
     const eartGlobeRadius = 0.5;
 
-    var globalConstantWireframe = false;
+    var globalConstantWireframe = true;
 
     scene = new THREE.Scene();
     groupCountries = new THREE.Group();
@@ -86,12 +94,22 @@ function initScene() {
         isMobile = true;
     }
 
+    // Load clues
+    if (isMobile) {
+        // Load the questions
+        questions.forEach((item, index) => {
+            const div = document.getElementById('clue' + index);
+            div.innerHTML = item[0];
+        });
+
+    }
+
 
     canvas.appendChild(renderer.domElement);
 
     //Axis helper
-    const axesHelper = new THREE.AxesHelper(3);
-    scene.add(axesHelper);
+    /* const axesHelper = new THREE.AxesHelper(3);
+    scene.add(axesHelper); */
 
     //Orbit controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -100,11 +118,11 @@ function initScene() {
     controls.enablePan = false;
     //controls.minDistance = 0.625;
     controls.minDistance = 0.62;
-    controls.zoomSpeed = 0.5;
-    controls.maxDistance = 1;
+    controls.zoomSpeed = 0.7;
+    controls.maxDistance = 1.5;
     controls.enableDamping = true;
     controls.autoRotate = false;
-    controls.autoRotateSpeed = 1;
+    controls.autoRotateSpeed = 0.6;
 
     var light = new THREE.AmbientLight(0xffffff, 3);
     scene.add(light);
@@ -127,6 +145,11 @@ function initScene() {
 
     //Initial camera poisition
     camera.position.set(0, 0, 1);
+
+    if (isMobile) {
+        camera.position.set(0, 0, 2.5);
+    }
+
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     if (resources.svgEarthTexture) {
@@ -160,7 +183,7 @@ function initScene() {
 
         var countryParts = [];
         scene.traverse((object) => {
-            if ((object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments) && object.name != "Earth globe" && object.type != "AxesHelper" && object.name == id) {
+            if ((object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments) && object.name != "Earth globe" && object.name == id) {
                 countryParts.push(object);
             }
         });
@@ -381,7 +404,6 @@ function initScene() {
     //Dynamically highlight the correct answers
     function markQuizQuestions(selectedId) {
 
-        //const questions = document.getElementById('questions');
         CountrySelected.forEach((country, index) => {
             if (country == selectedId) {
                 // DEBUG console.log("Solutions", solutions);
@@ -399,6 +421,24 @@ function initScene() {
 
     }
 
+    function markQuizQuestionMobile(selectedId) {
+        
+        CountrySelected.forEach((country) => {
+            if (country == selectedId) {
+                // DEBUG console.log("Solutions", solutions);
+                solutions.forEach((solution) => {
+                    if (solution == selectedId && solution == country) {
+                        var idx = solutions.indexOf(solution);
+                        const lastCorrect = document.getElementById("clue"+idx)
+                        lastCorrect.className = 'text-xl text-green-500 p-2';
+                    }
+                })
+            } else {
+                // DEBUG console.log("break");
+            }
+        });
+    }
+
     function markWrongQuizQuestions() {
 
         //const questions = document.getElementById('questions');
@@ -406,8 +446,8 @@ function initScene() {
             if (CountrySelected.includes(solution)) {
                 // DEBUG console.log("No pintar");
             } else {
-                const q = document.getElementById('q'+index);
-                q.className = 'p-2 text-1xl rounded-lg m-2 bg-customorange justify-items-center';
+                const q = document.getElementById('q' + index);
+                q.className = 'p-2 text-1xl rounded-lg m-2 bg-yellow-200 justify-items-center';
             }
         });
 
@@ -418,10 +458,10 @@ function initScene() {
         try {
             //const questions = document.getElementById('questions');
             questions.forEach((question, index) => {
-                const q = document.getElementById('q'+index);
+                const q = document.getElementById('q' + index);
                 const res = document.createElement('div');
                 res.innerHTML = indicesMap[question[[2]]];
-                res.className = 'items-center mt-1 mb-1 p-1 rounded-lg border-1 bg-gray-50';
+                res.className = 'items-center mt-1 mb-1 p-1 rounded-lg border-1 bg-yellow-200';
                 q.append(res);
                 // DEBUG console.log(respuesta, q);
             });
@@ -429,14 +469,23 @@ function initScene() {
         } catch (error) {
             console.error("Error drawing results", error);
         }
-        
+
+
+
     }
 
     function showResults(aciertos, total) {
         const results = document.getElementById("results");
         // DEBUG console.log(results);
         results.style.visibility = 'visible';
-        results.innerHTML = `Results: ${aciertos} hits out of ${total}`
+        const devolver = `Score: ${aciertos} hits out of ${total}`
+        results.innerHTML = devolver;
+
+        if (isMobile) {
+            const resultsMobile = document.getElementById('resultsMobile');
+            const devolverMobile = `${aciertos} hits out of ${total}`
+            resultsMobile.innerHTML = devolverMobile;
+        }
     }
 
 
@@ -514,20 +563,26 @@ function initScene() {
 
                     if (!CountrySelected.includes(clicked.name)) {
 
-
                         CountrySelected.push(clicked.name);
 
                     }
 
                     if (!endGame) {
 
-                        // DEBUG console.log("Dynamically change quiz");
-                        markQuizQuestions(clicked.name);
-
                         // DEBUG console.log(clicked);
                         clicked.material.color = selectedColor;
                         clicked.position.copy(originCoordinates);
                         // CHECK clicked.parent.children[intersected.parent.children.length - 1].position.copy(originCoordinates);
+
+                        // DEBUG console.log("Dynamically change quiz");
+                        markQuizQuestions(clicked.name);
+
+                        if (isMobile) {
+                            addElementToAnswers(clicked.name, "lastCorrect");
+                            markQuizQuestionMobile(clicked.name);
+                            console.log(clicked.name);
+                        }
+
 
                     }
 
@@ -561,6 +616,8 @@ function initScene() {
                     wrongCountriesSelected.push(clicked.name);
                     triesCount -= 1;
 
+
+
                     if (triesCount > 0) {
 
                         // DEBUG console.log("TRIES COUNT", triesCount);
@@ -590,7 +647,6 @@ function initScene() {
 
                         });
 
-
                     }
 
                     clicked.material.color = redColor;
@@ -611,6 +667,10 @@ function initScene() {
                         });
                     }
 
+                    if (isMobile) {
+                        addElementToAnswers(wrongCountriesSelected.slice(-1,), "lastSelected");
+                        console.log(clicked.name);
+                    }
 
                 }
 
@@ -666,22 +726,22 @@ function initScene() {
 
     }), false;
 
-    window.mobileCheck = function() {
-        isMobile = (function(a){
-        if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
+    window.mobileCheck = function () {
+        isMobile = (function (a) {
+            if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
+        })(navigator.userAgent || navigator.vendor || window.opera);
         return check;
-      };
+    };
 
 
     // GUI
     const gui = new GUI({ container: document.getElementById('gui-container') });
 
     const params = {
-        wireframe: false,
+        wireframe: true,
     }
 
-    const visualFolder = gui.addFolder('Visual');
-    visualFolder.add(params, 'wireframe').name('Draw countries').onChange((value) => {
+    gui.add(params, 'wireframe').name('Draw').onChange((value) => {
         globalConstantWireframe = value;
         // DEBUG console.log(value);
         scene.traverse((object) => {
@@ -691,7 +751,22 @@ function initScene() {
         });
     });
 
-    visualFolder.open()
+    // GUI - Answers mobile
+
+    function addElementToAnswers(element, type) {
+
+        if (type == "lastSelected") {
+            const guiLastSelected = document.getElementById('showLastCorrect');
+            guiLastSelected.innerHTML = "Last wrong guess: " + indicesMap[element];      
+
+        } else if (type == "lastCorrect") {
+            const guiLastCorrect = document.getElementById('showLastSelected');
+            guiLastCorrect.innerHTML = "Last country hit: " + indicesMap[element];
+        }
+
+    }
+
+
 
 }
 
@@ -743,10 +818,6 @@ function generateCountryGeometry(delaunayPointsIn3D, triangles, thickness = 0.00
         }
         return true;
     });
-
-    /*     console.log("POSITIONS", positions.length); // returns 3738
-        console.log("INDICES", indices.length); // returns 3009
-     */
 
     // Convert triangles to flat array of indices
     const myIndices = new Uint32Array(validTriangles.flat());
@@ -830,14 +901,6 @@ function generateDelaunayPointsIn3D(array, indice) {
     })
 
     var delaunayPointsIn3D = [];
-
-    // Check if poly2tri is loaded
-    if (typeof poly2tri !== 'undefined') {
-        //console.log('poly2tri is loaded!');
-    } else {
-        //console.log('poly2tri is NOT loaded!');
-    }
-
 
     try {
         // Create a SweepContext with the points
@@ -931,7 +994,7 @@ function generateMeshAndWireframe(array, triangles, countryId) {
 
     // Create the edges material
     const edgeMesh = geometryAndEdges.wireframe;
-    edgeMesh.visible = false;
+    edgeMesh.visible = true;
 
     groupCountryAndWireframe.add(edgeMesh);
 
@@ -1002,10 +1065,6 @@ loadingManager.onError = function (url) {
 
 
 // Instantite the loaders
-/* const GLTFloader = new GLTFLoader(loadingManager); */
-/* const loaderSVG = new SVGLoader(loadingManager);
-const textureLoader = new THREE.TextureLoader(loadingManager); */
-
 async function loadSVGFileToTexture(filePath, manager) {
     const uniqueId = filePath; // Unique identifier for this task
     //manager.itemStart(uniqueId); // Notify manager that this task has started */
@@ -1123,22 +1182,6 @@ function generateExtraCountryGeometry(pointsArray, delaunayPointsIn3D, thickness
 
     // Step 2: Create vertex positions
     const positions = []; // Array to store vertex positions (x, y, z)
-    //const indices = [];  // Array to store triangle indices
-
-    // Add all points (outer followed by inner) to positions
-    //const pointToIndex = new Map();
-    /*     outerPoints.forEach((point, index) => {
-            const magnitude = Math.sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
-            const scale = (magnitude + thickness) / magnitude;
-            positions.push(point.x * scale, point.y * scale, point.z * scale);
-            pointToIndex.set(index, index); // Map original index to position index
-        });
-        innerPoints.forEach((point, index) => {
-            const magnitude = Math.sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
-            const scale = (magnitude + thickness) / magnitude;
-            positions.push(point.x * scale, point.y * scale, point.z * scale);
-            pointToIndex.set(index + numOuterPoints, index + numOuterPoints);
-        }); */
 
     // Step 2: Create vertex positions from pointsArray
     const allPoints = outerPoints.concat(innerPoints);
@@ -1252,7 +1295,7 @@ function generateExtraMeshAndWireframe(array, countryId) {
     var geo = new THREE.EdgesGeometry(g, 30); // or WireframeGeometry
     var mat = new THREE.LineBasicMaterial({ color: 0x000000 });
     var wireframe = new THREE.LineSegments(geo, mat);
-    wireframe.visible = false;
+    wireframe.visible = true;
 
     groupCountryAndWireframe.add(wireframe);
 
@@ -1270,7 +1313,7 @@ async function loadPolyCountries(manager, countriesExtraData = extraCountriesDat
 
             countriesExtraData.forEach(function (extraCountryArray, idx) {
                 manager.itemStart(idx);
-                
+
                 groupCountriesExtra.add(generateExtraMeshAndWireframe(extraCountryArray, idx));
 
                 manager.itemEnd(idx);

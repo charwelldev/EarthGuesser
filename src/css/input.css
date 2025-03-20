@@ -17,7 +17,7 @@
 
     --color-oceanblue: #62b3f2;
 
-    --color-scenebackgroundcolor: #0f141c;
+    --color-scenebackgroundcolor: #111111;
 
     --color-customorange: #b39d51;
 
@@ -64,6 +64,25 @@ body {
     margin-bottom: 0.3rem;
 }
 
+.oval-gradient-mobile {
+    /* Border */
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at center, #000000, #000000),
+        radial-gradient(circle at top, #0593ff, #0e2f6f);
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+
+    /* Other styles */
+    width: 25px;
+    height: 12.5px;
+    rotate: -60deg;
+    margin-right: -0.7rem;
+    margin-left: -0.7rem;
+    margin-bottom: 0.3rem;
+}
+
 #loader {
     position: absolute;
     top: 0;
@@ -90,8 +109,8 @@ body {
     background-origin: padding-box, border-box;
 
     /* Other styles */
-    width: 4.375rem;
-    height: 2.25rem;
+    width: 4rem;
+    height: 2rem;
     rotate: 45deg;
     animation: spin 2s linear infinite;
 }
@@ -108,7 +127,7 @@ body {
 }
 
 #earthCanvas {
-    background-color: #0f141c;
+    background-color: #111;
     position: relative;
 }
 
@@ -141,4 +160,46 @@ body {
     background-color: #f3f4f6;
     border: #f3f4f6;
     border-radius: 2;
+}
+
+.gui-container {
+    width: 5rem;
+    background-color: #111;
+}
+
+.lil-gui.root {
+    display: flex;
+    flex-direction: column;
+    width: 7rem;
+    background-color: #111;
+}
+/* Target the main GUI container */
+.lil-gui {
+    width: 7rem; /* Reduce the width (default is often 240px or more) */
+    font-size: 12px; /* Shrink the font size */
+    line-height: 1.2; /* Tighten the line spacing */
+    background-color: #111;
+}
+
+.lil.gui-controls {
+    background-color: #111;
+}
+
+/* Reduce padding and margins for individual controls */
+.lil-gui .controller {
+    margin-bottom: 2px; /* Reduce spacing between controls */
+    padding: 4px; /* Shrink padding */
+    width: 5rem;
+    background-color: #111;
+}
+
+/* Adjust the label width */
+.lil-gui .name {
+    width: 5rem;
+    background-color: #111;
+}
+
+/* Style the input fields */
+.lil-gui .widget input {
+    width: 1.5rem;
 }
