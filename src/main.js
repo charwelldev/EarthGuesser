@@ -573,10 +573,9 @@ function initScene() {
                 const clicked = intersects[0].object;
                 // DEBUG console.log(clicked.name);
 
-                // DEBUG console.log(clicked.name);
+                // DEBUGCLICK console.log(clicked.name);
                 // DEBUG console.log(solutions);
 
-                console.log(clicked.name);
                 markLastCountrySelected(clicked.name);
 
                 // Logic if country is in the solutions

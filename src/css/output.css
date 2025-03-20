@@ -541,6 +541,9 @@
   .absolute {
     position: absolute;
   }
+  .fixed {
+    position: fixed;
+  }
   .relative {
     position: relative;
   }
@@ -666,6 +669,9 @@
   }
   .overflow-y-clip {
     overflow-y: clip;
+  }
+  .overflow-y-scroll {
+    overflow-y: scroll;
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
