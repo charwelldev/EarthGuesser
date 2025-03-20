@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "author": "charwelldev",
   "license": "ISC",
@@ -20,6 +21,7 @@
     "three": "^0.174.0"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vite": "^6.2.2"
   }
 }
