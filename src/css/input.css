@@ -17,7 +17,7 @@
 
     --color-oceanblue: #62b3f2;
 
-    --color-scenebackgroundcolor: #111111;
+    --color-scenebackgroundcolor: #0f141c;
 
     --color-customorange: #b39d51;
 
@@ -50,7 +50,7 @@ body {
     border: 2px solid transparent;
     border-radius: 50%;
     background:
-        radial-gradient(circle at center, #f3f4f6, #f3f4f6),
+        radial-gradient(circle at center, #0f141c, #0f141c),
         radial-gradient(circle at top, #0593ff, #0e2f6f);
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;

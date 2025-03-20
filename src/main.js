@@ -54,7 +54,7 @@ const hoverColor = new THREE.Color(111, 168, 220).setHex(0x6FA8DC);
 const selectedColor = new THREE.Color(0, 230, 0).setHex(0x00e600);
 const redColor = new THREE.Color(224, 102, 102).setHex(0xE06666);
 const originalColor = new THREE.Color(244, 67, 54).setHex(0xffffff);
-const yellowColor = new THREE.Color(254, 252, 191).setHex(0xfefcbf);
+const yellowColor = new THREE.Color(251, 243, 4).setHex(0xfbf304);
 const originCoordinates = new THREE.Vector3(0, 0, 0);
 
 
@@ -411,7 +411,7 @@ function initScene() {
                     if (solution == selectedId && solution == country) {
                         var idx = solutions.indexOf(solution);
                         const q = document.getElementById('q' + idx);
-                        q.className = 'p-2 text-1xl rounded-lg m-2 bg-green-500 justify-items-center';
+                        q.className = 'p-2 text-1xl text-white rounded-lg m-2 bg-green-500 justify-items-center';
                     }
                 })
             } else {
@@ -447,7 +447,7 @@ function initScene() {
                 // DEBUG console.log("No pintar");
             } else {
                 const q = document.getElementById('q' + index);
-                q.className = 'p-2 text-1xl rounded-lg m-2 bg-yellow-200 justify-items-center';
+                q.className = 'p-2 text-1xl rounded-lg border-1 border-amber-50 text-white m-2 bg-red-400 justify-items-center';
             }
         });
 
@@ -461,7 +461,7 @@ function initScene() {
                 const q = document.getElementById('q' + index);
                 const res = document.createElement('div');
                 res.innerHTML = indicesMap[question[[2]]];
-                res.className = 'items-center mt-1 mb-1 p-1 rounded-lg border-1 bg-yellow-200';
+                res.className = 'items-center mt-1 mb-1 p-1 rounded-lg border-1 border-amber-50 text-white bg-scenebackgroundcolor ';
                 q.append(res);
                 // DEBUG console.log(respuesta, q);
             });
@@ -542,7 +542,7 @@ function initScene() {
 
         //console.log("Pointer clicked, coordinates: ", pointer.x, pointer.y);
 
-        if (event.button == 0 && !endGame) {
+        if ((event.button == 0 || event.touches[0]) && !endGame) {
 
             //Set raycaster position
             raycaster.setFromCamera(mouse, camera);
@@ -703,18 +703,19 @@ function initScene() {
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseup", onMouseUp);
 
+    // Touch event listener for iOS compatibility
+    window.addEventListener("touchstart", onMouseClick);
+
     // Handle window resize
     window.addEventListener('resize', () => {
         var scopeCanvas = document.getElementById("main_container");
-        const width = 0.75 * scopeCanvas.offsetWidth;
+        const width = scopeCanvas.offsetWidth;
         const height = scopeCanvas.offsetHeight;
 
         renderer.setSize(width, height);
 
-
-
         if (container.clientWidth > 768) {
-            const width = 0.75 * scopeCanvas.offsetWidth;
+            const width = scopeCanvas.offsetWidth;
             const height = scopeCanvas.offsetHeight;
             renderer.setSize(width, height);
         } else {
@@ -761,7 +762,7 @@ function initScene() {
 
         } else if (type == "lastCorrect") {
             const guiLastCorrect = document.getElementById('showLastSelected');
-            guiLastCorrect.innerHTML = "Last country hit: " + indicesMap[element];
+            guiLastCorrect.innerHTML = "Last country guessed: " + indicesMap[element];
         }
 
     }

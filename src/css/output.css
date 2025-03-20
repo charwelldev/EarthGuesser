@@ -387,7 +387,7 @@
     --color-lightgray: #d8e0ec;
     --color-bordergray: #9da5b0;
     --color-oceanblue: #62b3f2;
-    --color-scenebackgroundcolor: #111111;
+    --color-scenebackgroundcolor: #0f141c;
     --color-customorange: #b39d51;
     --text-tiny: 1rem;
   }
@@ -725,9 +725,6 @@
   .border-b-amber-50 {
     border-bottom-color: var(--color-amber-50);
   }
-  .bg-customorange {
-    background-color: var(--color-customorange);
-  }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
   }
@@ -736,6 +733,18 @@
   }
   .bg-green-500 {
     background-color: var(--color-green-500);
+  }
+  .bg-red-200 {
+    background-color: var(--color-red-200);
+  }
+  .bg-red-300 {
+    background-color: var(--color-red-300);
+  }
+  .bg-red-400 {
+    background-color: var(--color-red-400);
+  }
+  .bg-red-500 {
+    background-color: var(--color-red-500);
   }
   .bg-scenebackgroundcolor {
     background-color: var(--color-scenebackgroundcolor);
@@ -779,6 +788,10 @@
     --tw-gradient-to: var(--color-red-600);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position,) var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
+  .to-scenebackgroundcolor {
+    --tw-gradient-to: var(--color-scenebackgroundcolor);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position,) var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
   .bg-clip-text {
     background-clip: text;
   }
@@ -815,6 +828,9 @@
   }
   .text-green-500 {
     color: var(--color-green-500);
+  }
+  .text-red-500 {
+    color: var(--color-red-500);
   }
   .text-transparent {
     color: transparent;
@@ -917,6 +933,11 @@
       justify-content: center;
     }
   }
+  .md\:bg-scenebackgroundcolor {
+    @media (width >= 48rem) {
+      background-color: var(--color-scenebackgroundcolor);
+    }
+  }
 }
 html {
   height: 100%;
@@ -939,7 +960,7 @@ body {
 .oval-gradient {
   border: 2px solid transparent;
   border-radius: 50%;
-  background: radial-gradient(circle at center, #f3f4f6, #f3f4f6), radial-gradient(circle at top, #0593ff, #0e2f6f);
+  background: radial-gradient(circle at center, #0f141c, #0f141c), radial-gradient(circle at top, #0593ff, #0e2f6f);
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   width: 25px;
