@@ -386,6 +386,7 @@
     --color-cyansky2: #5659c8
     --color-lightgray: #d8e0ec;
     --color-bordergray: #9da5b0;
+    --color-yellowMobile: #fbf304;
     --color-oceanblue: #62b3f2;
     --color-scenebackgroundcolor: #0f141c;
     --color-customorange: #b39d51;
@@ -725,32 +726,14 @@
   .border-b-amber-50 {
     border-bottom-color: var(--color-amber-50);
   }
-  .bg-gray-50 {
-    background-color: var(--color-gray-50);
-  }
-  .bg-gray-200 {
-    background-color: var(--color-gray-200);
-  }
   .bg-green-500 {
     background-color: var(--color-green-500);
-  }
-  .bg-red-200 {
-    background-color: var(--color-red-200);
-  }
-  .bg-red-300 {
-    background-color: var(--color-red-300);
   }
   .bg-red-400 {
     background-color: var(--color-red-400);
   }
-  .bg-red-500 {
-    background-color: var(--color-red-500);
-  }
   .bg-scenebackgroundcolor {
     background-color: var(--color-scenebackgroundcolor);
-  }
-  .bg-yellow-200 {
-    background-color: var(--color-yellow-200);
   }
   .bg-conic-180 {
     --tw-gradient-position: from 180deg in oklab,;
@@ -782,14 +765,6 @@
   }
   .to-cyansky {
     --tw-gradient-to: var(--color-cyansky);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position,) var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
-  .to-red-600 {
-    --tw-gradient-to: var(--color-red-600);
-    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position,) var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
-  }
-  .to-scenebackgroundcolor {
-    --tw-gradient-to: var(--color-scenebackgroundcolor);
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position,) var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
   .bg-clip-text {
@@ -837,6 +812,12 @@
   }
   .text-white {
     color: var(--color-white);
+  }
+  .text-yellow-300 {
+    color: var(--color-yellow-300);
+  }
+  .text-yellowMobile {
+    color: var(--color-yellowMobile);
   }
   .underline {
     text-decoration-line: underline;

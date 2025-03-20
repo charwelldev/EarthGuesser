@@ -427,14 +427,27 @@ function initScene() {
             if (country == selectedId) {
                 // DEBUG console.log("Solutions", solutions);
                 solutions.forEach((solution) => {
+                    var idx = solutions.indexOf(solution);
                     if (solution == selectedId && solution == country) {
-                        var idx = solutions.indexOf(solution);
                         const lastCorrect = document.getElementById("clue"+idx)
                         lastCorrect.className = 'text-xl text-green-500 p-2';
                     }
                 })
             } else {
                 // DEBUG console.log("break");
+            }
+        });
+    }
+
+    function markWrongQuizQuestionsMobile(selectedId) {
+        
+        //const questions = document.getElementById('questions');
+        solutions.forEach((solution, index) => {
+            if (CountrySelected.includes(solution)) {
+                // DEBUG console.log("No pintar");
+            } else {
+                const q = document.getElementById('clue' + index);
+                q.className = 'text-xl text-yellowMobile p-2';
             }
         });
     }
@@ -629,6 +642,7 @@ function initScene() {
                         // DEBUG console.log("TRIES COUNT", triesCount);
                         drawTries();
                         markWrongQuizQuestions();
+                        markWrongQuizQuestionsMobile();
 
                         // DEBUGconsole.log(solutions.length, CountrySelected.length)
                         // DEBUG console.log("Aciertos %", CountrySelected.length / solutions.length);
@@ -758,7 +772,7 @@ function initScene() {
 
         if (type == "lastSelected") {
             const guiLastSelected = document.getElementById('showLastCorrect');
-            guiLastSelected.innerHTML = "Last wrong guess: " + indicesMap[element];      
+            guiLastSelected.innerHTML = "Last wrong country: " + indicesMap[element];      
 
         } else if (type == "lastCorrect") {
             const guiLastCorrect = document.getElementById('showLastSelected');
