@@ -3,12 +3,14 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
-import textureSvg from "/textures/map_no_countries.svg"
+import textureSvg from "/textures/map_no_countries.svg";
+import textureDisc from "/textures/disc.png";
 
 import countriesData from '/src/assets/countries/tesselations.json' with { type: "json" };
 import extraCountriesData from '/src/assets/countries/delaunay.json' with { type: "json" };
 import indicesMap from '/src/assets/questions/indicesMap.js';
 import questions from '/src/assets/questions/questions.js';
+import capitalsMaps from '/src/assets/countries/capitalsMaps.js';
 
 var CountrySelected = [];
 var wrongCountriesSelected = [];
@@ -55,6 +57,7 @@ const selectedColor = new THREE.Color(0, 230, 0).setHex(0x00e600);
 const redColor = new THREE.Color(224, 102, 102).setHex(0xE06666);
 const originalColor = new THREE.Color(244, 67, 54).setHex(0xffffff);
 const yellowColor = new THREE.Color(251, 243, 4).setHex(0xfbf304);
+const discColor = new THREE.Color(0, 255, 0).setHex(0x00ff00);
 const originCoordinates = new THREE.Vector3(0, 0, 0);
 
 
@@ -72,6 +75,7 @@ function initScene() {
     const eartGlobeRadius = 0.5;
 
     var globalConstantWireframe = true;
+    var globalConstantCapitals = false;
 
     scene = new THREE.Scene();
     groupCountries = new THREE.Group();
@@ -104,19 +108,14 @@ function initScene() {
 
     }
 
-
     canvas.appendChild(renderer.domElement);
-
-    //Axis helper
-    /* const axesHelper = new THREE.AxesHelper(3);
-    scene.add(axesHelper); */
 
     //Orbit controls
     const controls = new OrbitControls(camera, renderer.domElement);
 
     controls.enabled = true;
     controls.enablePan = false;
-    //controls.minDistance = 0.625;
+    //controls.minDistance = 0.62;
     controls.minDistance = 0.62;
     controls.zoomSpeed = 0.7;
     controls.maxDistance = 1.5;
@@ -176,6 +175,78 @@ function initScene() {
         scene.add(countriesExtra);
     }
 
+    function createTextTexture(text) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = 250;
+        canvas.height = 64;
+
+        // Style the text
+        context.fillStyle = 'rgba(0, 0, 0, 0.6)'; // Background
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.font = '24px Arial';
+        context.fillStyle = 'white';
+        context.textAlign = 'center';
+        context.fillText(text, canvas.width / 2, canvas.height / 2 + 8); // Offset for vertical centering
+
+        const texture = new THREE.CanvasTexture(canvas);
+        return texture;
+    }
+
+    function addCapitalCities(thickness = 0.01) {
+
+        const positions = new Float32Array(capitalsMaps.length * 3);
+        const sizes = new Float32Array(capitalsMaps.length);
+
+        capitalsMaps.forEach((city, i) => {
+            const pos = latLonTo3DSphere(city.lat, city.lon, eartGlobeRadius);
+
+            const magnitude = Math.sqrt(pos.x * pos.x + pos.y * pos.y + pos.z * pos.z);
+            const scale = (magnitude + thickness) / magnitude;
+
+            var posWithThickness = new THREE.Vector3(pos.x * scale, pos.y * scale, pos.z * scale);
+
+            posWithThickness.toArray(positions, i * 3);
+            sizes[i] = 0.0025;
+
+            const spriteMaterial = new THREE.SpriteMaterial({
+                map: createTextTexture(city.name),
+                transparent: true,
+                depthTest: true
+            });
+            const sprite = new THREE.Sprite(spriteMaterial);
+            sprite.position.copy(posWithThickness);
+            sprite.scale.set(0.2 / 8, 0.05 / 8, 1 / 8);
+            scene.add(sprite);
+            sprite.visible = false;
+        });
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('HIVsize', new THREE.BufferAttribute(sizes, 1));
+
+        const material = new THREE.PointsMaterial({
+            color: discColor,
+            size: 0.0025,
+            map: new THREE.TextureLoader().load(textureDisc),
+            blending: THREE.NormalBlending,
+            depthTest: true,
+            transparent: false
+        });
+
+        /*         const points = new THREE.Points(geometry, material);
+                scene.add(points);
+                points.visible = false; */
+    }
+
+    if (!isMobile) {
+        addCapitalCities();
+    }
+
+    console.log(scene);
+
+
+
     //Dragging
     var isDragging = false;
 
@@ -216,6 +287,8 @@ function initScene() {
 
                     if (intersected) {
 
+                        //console.log(intersected);
+
                         intersected.material.color = originalColor;
                         intersected.position.copy(originCoordinates);
                         intersected.parent.children[intersected.parent.children.length - 1].position.copy(originCoordinates);
@@ -223,17 +296,37 @@ function initScene() {
 
                         countryParts = lookForCountryParts(intersected.name);
 
+                        const countryPartsHomonim = lookForCountryParts(intersected.name);
+
+                        //console.log(countryPartsHomonim);
+
                         // Modify countryParts
                         if (countryParts) {
 
                             countryParts.forEach((object) => {
                                 if ((object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments)) {
                                     object.material.color = originalColor;
-                                    object.parent.children[intersected.parent.children.length - 1].position.copy(originCoordinates);
+                                    object.parent.children[0].position.copy(originCoordinates);
+                                    object.parent.children[1].position.copy(originCoordinates);
                                 }
                             });
 
                         }
+                        
+                        // Modify countryParts
+                        if (countryPartsHomonim) {
+
+                            countryPartsHomonim.forEach((object) => {
+                                if ((object instanceof THREE.LineSegments)) {
+                                    //console.log(object);
+                                    object.position.copy(originCoordinates);
+                                }
+                            });
+
+                        }
+
+                        
+
                         if (wrongCountriesSelected.includes(intersected.name)) {
 
                             intersects[0].object.material.color = redColor;
@@ -278,13 +371,15 @@ function initScene() {
                         // Modify countryparts
                         if (countryParts) {
                             countryParts.forEach((object) => {
-                                if ((object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments)) {
+                                if ((object instanceof THREE.Mesh) || (object instanceof THREE.LineSegments)) {
                                     object.material.color = hoverColor;
                                     // Now you can set the position of the mesh to the local position
                                     object.position.copy(transformPositionWithMagnitud(worldPos, intersected.matrixWorld));
+                                    object.parent.children[1].position.copy(transformPositionWithMagnitud(worldPos, intersected.matrixWorld));
                                 }
                             });
                         }
+                        
 
                     }
 
@@ -302,8 +397,10 @@ function initScene() {
 
                             countryParts.forEach((object) => {
                                 if ((object instanceof THREE.Mesh)) {
+                                    // IS NOT console.log(object);
                                     object.material.color = redColor;
-                                    object.parent.children[object.parent.children.length - 1].position.copy(originCoordinates);
+                                    object.parent.children[0].position.copy(originCoordinates);
+                                    object.parent.children[1].position.copy(originCoordinates);
                                 }
                             });
                         }
@@ -329,9 +426,12 @@ function initScene() {
                             if ((object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments)) {
                                 object.material.color = originalColor;
                                 // Now you can set the position of the mesh to the local position
-                                object.parent.children[object.parent.children.length - 1].position.copy(originCoordinates);
+                                object.parent.children[0].position.copy(originCoordinates);
+                                object.parent.children[1].position.copy(originCoordinates);
+                                
                             }
                         });
+                        
 
                     }
 
@@ -351,7 +451,8 @@ function initScene() {
                             countryParts.forEach((object) => {
                                 if ((object instanceof THREE.Mesh)) {
                                     object.material.color = redColor;
-                                    object.parent.children[object.parent.children.length - 1].position.copy(originCoordinates);
+                                    object.parent.children[0].position.copy(originCoordinates);
+                                    object.parent.children[1].position.copy(originCoordinates);
                                 }
                             });
                         }
@@ -549,11 +650,6 @@ function initScene() {
 
     function onMouseClick(event) {
 
-        //event.preventDefault();
-
-        //mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        //mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-
         const rect = renderer.domElement.getBoundingClientRect();
         mouse.x = ((event.clientX - rect.left) / (rect.right - rect.left)) * 2 - 1;
         mouse.y = - ((event.clientY - rect.top) / (rect.bottom - rect.top)) * 2 + 1;
@@ -589,12 +685,12 @@ function initScene() {
                         clicked.position.copy(originCoordinates);
                         // CHECK clicked.parent.children[intersected.parent.children.length - 1].position.copy(originCoordinates);
 
- 
+
 
                         if (isMobile) {
                             addElementToAnswers(clicked.name, "lastCorrect");
                             markQuizQuestionMobile(clicked.name);
-                            console.log(clicked.name);
+                            //console.log(clicked.name);
                         }
 
 
@@ -627,12 +723,13 @@ function initScene() {
 
                         countryParts.forEach((object) => {
                             if ((object instanceof THREE.Mesh)) {
+                                console.log(object);
                                 object.material.color = selectedColor;
-                                object.parent.children[clicked.parent.children.length - 1].position.copy(originCoordinates);
+                                object.parent.children[1].position.copy(originCoordinates);
+                                object.parent.children[0].position.copy(originCoordinates);
                             }
                         });
                     }
-
 
 
                 } else {
@@ -687,14 +784,15 @@ function initScene() {
                         countryParts.forEach((object) => {
                             if ((object instanceof THREE.Mesh)) {
                                 object.material.color = redColor;
-                                object.parent.children[clicked.parent.children.length - 1].position.copy(originCoordinates);
+                                object.parent.children[0].position.copy(originCoordinates);
+                                object.parent.children[1].position.copy(originCoordinates);
                             }
                         });
                     }
 
                     if (isMobile) {
                         addElementToAnswers(wrongCountriesSelected.slice(-1,), "lastSelected");
-                        console.log(clicked.name);
+                        //console.log(clicked.name);
                     }
 
                 }
@@ -767,6 +865,10 @@ function initScene() {
         wireframe: true,
     }
 
+    const paramsCapital = {
+        capitals: false,
+    }
+
     gui.add(params, 'wireframe').name('Draw').onChange((value) => {
         globalConstantWireframe = value;
         // DEBUG console.log(value);
@@ -776,6 +878,18 @@ function initScene() {
             }
         });
     });
+
+    if (!isMobile) {
+        gui.add(paramsCapital, 'capitals').name('Capitals').onChange((value) => {
+            globalConstantCapitals = value;
+            // DEBUG console.log(value);
+            scene.traverse((object) => {
+                if ((object instanceof THREE.Points) || object instanceof THREE.Sprite) {
+                    object.visible = value;
+                }
+            });
+        });
+    }
 
     // GUI - Answers mobile
 
@@ -1021,6 +1135,7 @@ function generateMeshAndWireframe(array, triangles, countryId) {
     // Create the edges material
     const edgeMesh = geometryAndEdges.wireframe;
     edgeMesh.visible = true;
+    edgeMesh.name = countryId;
 
     groupCountryAndWireframe.add(edgeMesh);
 
@@ -1322,6 +1437,7 @@ function generateExtraMeshAndWireframe(array, countryId) {
     var mat = new THREE.LineBasicMaterial({ color: 0x000000 });
     var wireframe = new THREE.LineSegments(geo, mat);
     wireframe.visible = true;
+    wireframe.name = countryId + 200;
 
     groupCountryAndWireframe.add(wireframe);
 
