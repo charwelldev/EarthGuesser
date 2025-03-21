@@ -536,7 +536,9 @@ function initScene() {
                 // DEBUG console.log("Solutions", solutions);
                 solutions.forEach((solution) => {
                     var idx = solutions.indexOf(solution);
+                    console.log("idx", idx);
                     if (solution == selectedId && solution == country) {
+                        
                         const lastCorrect = document.getElementById("clue" + idx)
                         lastCorrect.className = 'text-xl text-green-500 p-2';
                     }
@@ -680,24 +682,24 @@ function initScene() {
 
                     if (!endGame) {
 
+
                         // DEBUG console.log(clicked);
                         clicked.material.color = selectedColor;
                         clicked.position.copy(originCoordinates);
                         // CHECK clicked.parent.children[intersected.parent.children.length - 1].position.copy(originCoordinates);
 
 
-
-                        if (isMobile) {
-                            addElementToAnswers(clicked.name, "lastCorrect");
-                            markQuizQuestionMobile(clicked.name);
-                            //console.log(clicked.name);
-                        }
-
-
                         if (!CountrySelected.includes(clicked.name)) {
 
                             CountrySelected.push(clicked.name);
 
+                        }
+
+                        if (isMobile) {
+                            addElementToAnswers(clicked.name, "lastCorrect");
+                            console.log(clicked.name);
+                            markQuizQuestionMobile(clicked.name);
+                            //console.log(clicked.name);
                         }
 
                         // DEBUG console.log("Dynamically change quiz");
@@ -723,7 +725,6 @@ function initScene() {
 
                         countryParts.forEach((object) => {
                             if ((object instanceof THREE.Mesh)) {
-                                console.log(object);
                                 object.material.color = selectedColor;
                                 object.parent.children[1].position.copy(originCoordinates);
                                 object.parent.children[0].position.copy(originCoordinates);
