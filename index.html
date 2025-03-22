@@ -17,8 +17,8 @@
   <script src="/EarthGuesser/poly2tri.min.js"></script>
 
 
-  <script type="module" crossorigin src="/EarthGuesser/src/index-RAJn08WW.js"></script>
-  <link rel="stylesheet" crossorigin href="/EarthGuesser/src/index-PSCnLY10.css">
+  <script type="module" crossorigin src="/EarthGuesser/src/index-CvKW38wu.js"></script>
+  <link rel="stylesheet" crossorigin href="/EarthGuesser/src/index-CHv_yER7.css">
 </head>
 
 <body class="font-raleway bg-scenebackgroundcolor">
@@ -54,7 +54,7 @@
       <div
         class="overflow-y-clip p-4 w-full bg-scenebackgroundcolor border-2 border-cyansky border-solid rounded-lg md:flex md:flex-col md:justify-between md:mb-6">
         <div class="text-2xl text-center text-bluesky">
-          Guess each the country, on the globe, for each clue</div>
+          Guess each country, on the globe, for each clue</div>
 
         <!-- <span class="text-4xl text-center bg-gradient-to-t from-gray-600 to-cyansky bg-clip-text text-transparent mt-4"></span> -->
 
@@ -121,22 +121,23 @@
           <li class="inline-block">Guessr</li>
         </ul>
         <div class="text-xl text-white " id="triesCountMobile">Remaining attempts: 9</div>
-        <div class="text-xl text-white" id="showLastCorrect">Last wrong country: </div>
-        <div class="text-xl text-white " id="showLastSelected">Last country guessed: </div>
+        <div class="text-xl text-white " id="lastCountrySelectedMobile">Last selected country: </div>
+        
       </div>
       <div class="absolute top-0 right-0 z-10" id="gui-container"></div>
       <div id="loader" class="absolute top-0 left-0 w-full h-full flex justify-center items-center z-50 flex-shrink-0">
         <div class="spinner"></div>
       </div>
-      <div class="md:hidden absolute bottom-0 left-0 z-10 bg-scenebackgroundcolor rounded-tr-sm flex flex-col p-4">
-        <div class="text-2xl text-white border-b-2 border-b-amber-50">Guess each country</div>
-        <div class="text-xl text-white p-2" id="clue0"></div>
-        <div class="text-xl text-white p-2" id="clue1"></div>
-        <div class="text-xl text-white p-2" id="clue2"></div>
-        <div class="text-xl text-white p-2" id="clue3"></div>
+      <div class="md:hidden absolute bottom-0 w-full z-10 bg-scenebackgroundcolor rounded-tr-sm flex flex-col p-4">
+        <div class="text-2xl text-white mb-4 text-center">Guess each country, for each clue</div>
+        <button id="toggleButton" class="text-xl text-white bg-blue-600 px-4 py-2 mb-2 rounded hover:bg-blue-700">Hide clues</button>
+        <div class="text-md text-black p-2 clue rounded bg-gray-50 m-2" id="clue0"></div>
+        <div class="text-md text-black p-2 clue bg-gray-50 m-2" id="clue1"></div>
+        <div class="text-md text-black p-2 clue bg-gray-50 m-2" id="clue2"></div>
+        <div class="text-md text-black p-2 clue bg-gray-50 m-2" id="clue3"></div>
         <div class="text-2xl text-white border-b-2 border-amber-50">Score</div>
-        <div class="text-xl text-white " id="resultsMobile"></div>
-      </div>
+        <div class="text-md text-white " id="resultsMobile"></div>
+    </div>
     </div>
 
   </div>
@@ -144,14 +145,17 @@
 </body>
 <script>
 
-  // Scroll to 3D Canvas
-  function scrollToCanvas() {
-    const yOffset = 0;
-    const element = document.getElementById("earthCanvas");
-    const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-    window.scrollTo({ top: y, behavior: 'smooth' })
-    //document.getElementById("earthCanvas").scrollIntoView({block: "start", behavior: "smooth"});
-  }
+  const toggleButton = document.getElementById('toggleButton');
+    const clues = document.querySelectorAll('.clue');
+    let isHidden = false;
+
+    toggleButton.addEventListener('click', () => {
+        isHidden = !isHidden;
+        clues.forEach(clue => {
+            clue.style.display = isHidden ? 'none' : 'block';
+        });
+        toggleButton.textContent = isHidden ? 'Show clues' : 'Hide clues';
+    });
 
   // Scroll to 3D Canvas
   function scrollToQuestions() {
