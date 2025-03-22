@@ -40,7 +40,7 @@ function drawTries() {
 
     if (isMobile) {
         const triesMobile = document.getElementById('triesCountMobile');
-        triesMobile.innerHTML = "Remaining tries: " + triesCount;
+        triesMobile.innerHTML = "Remaining attempts: " + triesCount;
     }
 
 }
@@ -509,6 +509,11 @@ function initScene() {
 
     }
 
+    function markLastCountrySelectedMobile(selectedId) {
+        const c1 = document.getElementById('lastCountrySelectedMobile');
+        c1.innerHTML = 'Last selected country: ' + indicesMap[selectedId];
+    }
+
     //Dynamically highlight the correct answers
     function markQuizQuestions(selectedId) {
 
@@ -540,7 +545,7 @@ function initScene() {
                     if (solution == selectedId && solution == country) {
                         
                         const lastCorrect = document.getElementById("clue" + idx)
-                        lastCorrect.className = 'text-xl text-green-500 p-2';
+                        lastCorrect.className = "text-md text-black p-2 rounded bg-green-500 m-2";
                     }
                 })
             } else {
@@ -557,7 +562,7 @@ function initScene() {
                 // DEBUG console.log("No pintar");
             } else {
                 const q = document.getElementById('clue' + index);
-                q.className = 'text-xl text-yellowMobile p-2';
+                q.className = 'text-md text-black p-2 rounded bg-yellowMobile m-2';
             }
         });
     }
@@ -570,7 +575,7 @@ function initScene() {
                 // DEBUG console.log("No pintar");
             } else {
                 const q = document.getElementById('q' + index);
-                q.className = 'p-2 text-1xl rounded-lg border-1 border-amber-50 text-black m-2 bg-yellow-200 justify-items-center';
+                q.className = 'p-2 text-1xl rounded-lg border-1 border-amber-50 text-black m-2 bg-yellow-400 justify-items-center';
             }
         });
 
@@ -696,8 +701,7 @@ function initScene() {
                         }
 
                         if (isMobile) {
-                            addElementToAnswers(clicked.name, "lastCorrect");
-                            console.log(clicked.name);
+                            markLastCountrySelectedMobile(clicked.name);
                             markQuizQuestionMobile(clicked.name);
                             //console.log(clicked.name);
                         }
@@ -792,7 +796,7 @@ function initScene() {
                     }
 
                     if (isMobile) {
-                        addElementToAnswers(wrongCountriesSelected.slice(-1,), "lastSelected");
+                        markLastCountrySelectedMobile(clicked.name);
                         //console.log(clicked.name);
                     }
 
