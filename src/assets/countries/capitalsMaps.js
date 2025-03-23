@@ -128,7 +128,7 @@ const capitals = [
     { name: 'Oslo', lat: 59.55, lon: 10.45 },
     { name: 'Masqat', lat: 23.37, lon: 58.36 },
     { name: 'Islamabad', lat: 33.4, lon: 73.1 },
-    { name: 'Ngerulmud', lat: 33.4, lon: 134.6243 },
+    { name: 'Tokyo', lat: 35.689487, lon: 139.691706 },
     { name: 'Panama', lat: 9, lon: -79.25 },
     { name: 'Port Moresby', lat: -9.24, lon: 147.08 },
     { name: 'Asuncion', lat: -25.10, lon: 147.08 },

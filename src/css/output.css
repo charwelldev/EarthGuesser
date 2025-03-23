@@ -694,9 +694,6 @@
   .overflow-y-clip {
     overflow-y: clip;
   }
-  .overflow-y-scroll {
-    overflow-y: scroll;
-  }
   .rounded {
     border-radius: 0.25rem;
   }
@@ -706,8 +703,9 @@
   .rounded-tr-sm {
     border-top-right-radius: var(--radius-sm);
   }
-  .rounded-br-sm {
-    border-bottom-right-radius: var(--radius-sm);
+  .rounded-b-md {
+    border-bottom-right-radius: var(--radius-md);
+    border-bottom-left-radius: var(--radius-md);
   }
   .border {
     border-style: var(--tw-border-style);
@@ -735,20 +733,11 @@
   .border-cyansky {
     border-color: var(--color-cyansky);
   }
-  .border-b-amber-50 {
-    border-bottom-color: var(--color-amber-50);
-  }
-  .bg-amber-600 {
-    background-color: var(--color-amber-600);
-  }
   .bg-blue-600 {
     background-color: var(--color-blue-600);
   }
   .bg-gray-50 {
     background-color: var(--color-gray-50);
-  }
-  .bg-green-50 {
-    background-color: var(--color-green-50);
   }
   .bg-green-500 {
     background-color: var(--color-green-500);
@@ -756,14 +745,8 @@
   .bg-scenebackgroundcolor {
     background-color: var(--color-scenebackgroundcolor);
   }
-  .bg-yellow-200 {
-    background-color: var(--color-yellow-200);
-  }
   .bg-yellow-400 {
     background-color: var(--color-yellow-400);
-  }
-  .bg-yellow-500 {
-    background-color: var(--color-yellow-500);
   }
   .bg-yellowMobile {
     background-color: var(--color-yellowMobile);
@@ -824,12 +807,6 @@
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
-  .pr-2 {
-    padding-right: calc(var(--spacing) * 2);
-  }
-  .pr-4 {
-    padding-right: calc(var(--spacing) * 4);
-  }
   .text-center {
     text-align: center;
   }
@@ -855,9 +832,6 @@
   .text-bluesky {
     color: var(--color-bluesky);
   }
-  .text-green-500 {
-    color: var(--color-green-500);
-  }
   .text-red-500 {
     color: var(--color-red-500);
   }
@@ -866,9 +840,6 @@
   }
   .text-white {
     color: var(--color-white);
-  }
-  .text-yellowMobile {
-    color: var(--color-yellowMobile);
   }
   .underline {
     text-decoration-line: underline;
@@ -904,13 +875,6 @@
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
-  }
-  .hover\:bg-amber-700 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-amber-700);
-      }
-    }
   }
   .hover\:bg-blue-700 {
     &:hover {
@@ -1047,8 +1011,8 @@ body {
   background: radial-gradient(circle at center, #0f141c, #0f141c), radial-gradient(circle at top, #0593ff, #0e2f6f);
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
-  width: 4rem;
-  height: 2rem;
+  width: 3rem;
+  height: 1.5rem;
   rotate: 45deg;
   animation: spin 2s linear infinite;
 }

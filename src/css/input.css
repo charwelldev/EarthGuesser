@@ -110,8 +110,8 @@ body {
     background-origin: padding-box, border-box;
 
     /* Other styles */
-    width: 4rem;
-    height: 2rem;
+    width: 3rem;
+    height: 1.5rem;
     rotate: 45deg;
     animation: spin 2s linear infinite;
 }

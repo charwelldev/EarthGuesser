@@ -312,7 +312,7 @@ function initScene() {
                             });
 
                         }
-                        
+
                         // Modify countryParts
                         if (countryPartsHomonim) {
 
@@ -325,7 +325,7 @@ function initScene() {
 
                         }
 
-                        
+
 
                         if (wrongCountriesSelected.includes(intersected.name)) {
 
@@ -379,7 +379,7 @@ function initScene() {
                                 }
                             });
                         }
-                        
+
 
                     }
 
@@ -428,10 +428,10 @@ function initScene() {
                                 // Now you can set the position of the mesh to the local position
                                 object.parent.children[0].position.copy(originCoordinates);
                                 object.parent.children[1].position.copy(originCoordinates);
-                                
+
                             }
                         });
-                        
+
 
                     }
 
@@ -543,7 +543,7 @@ function initScene() {
                     var idx = solutions.indexOf(solution);
                     console.log("idx", idx);
                     if (solution == selectedId && solution == country) {
-                        
+
                         const lastCorrect = document.getElementById("clue" + idx)
                         lastCorrect.className = "text-md text-black p-2 rounded bg-green-500 m-2";
                     }
@@ -863,28 +863,31 @@ function initScene() {
     };
 
 
-    // GUI
-    const gui = new GUI({ container: document.getElementById('gui-container') });
 
-    const params = {
-        wireframe: true,
-    }
-
-    const paramsCapital = {
-        capitals: false,
-    }
-
-    gui.add(params, 'wireframe').name('Draw').onChange((value) => {
-        globalConstantWireframe = value;
-        // DEBUG console.log(value);
-        scene.traverse((object) => {
-            if ((object instanceof THREE.LineSegments)) {
-                object.visible = value;
-            }
-        });
-    });
 
     if (!isMobile) {
+
+        // GUI
+        const gui = new GUI({ container: document.getElementById('gui-container') });
+
+        const params = {
+            wireframe: true,
+        }
+
+        const paramsCapital = {
+            capitals: false,
+        }
+
+        gui.add(params, 'wireframe').name('Draw').onChange((value) => {
+            globalConstantWireframe = value;
+            // DEBUG console.log(value);
+            scene.traverse((object) => {
+                if ((object instanceof THREE.LineSegments)) {
+                    object.visible = value;
+                }
+            });
+        });
+
         gui.add(paramsCapital, 'capitals').name('Capitals').onChange((value) => {
             globalConstantCapitals = value;
             // DEBUG console.log(value);
