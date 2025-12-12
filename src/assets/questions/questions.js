@@ -1,8 +1,9 @@
 const questions = [
-    ['Vending machines are popular', 'Geography', 92],
-    ['Buddhism was born', 'History', 100],
-    ["Isaac Newton's home country", 'Science', 11],
-    ['Has three capital cities', 'Geography', 200]
+    ['Japan', 92],
+    ['Russia', 49],
+    ['United States', 10],
+    ['South Africa', 200],
+    ['Chile', 135]
 ];
 
 export default questions;

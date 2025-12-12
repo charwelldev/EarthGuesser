@@ -15,3 +15,17 @@ npm-debug.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+# Supabase config & local dev settings
+supabase/.temp
+supabase/.branches
+supabase/.config
+supabase/.env
+supabase/.gitignore
+supabase/config.toml
+supabase/seed.sql
+
+# Environment files
+.env
+.env.local
+.env.*.local

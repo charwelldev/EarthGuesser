@@ -12,13 +12,18 @@
   "author": "charwelldev",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.81.1",
     "@tailwindcss/cli": "^4.0.1",
+    "@tweenjs/tween.js": "^25.0.0",
     "autoprefixer": "^10.4.20",
     "d3-delaunay": "^6.0.4",
     "poly2tri": "^1.5.0",
     "postcss": "^8.5.1",
+    "stats.js": "^0.17.0",
+    "supabase": "^2.58.5",
     "tailwindcss": "^4.0.1",
-    "three": "^0.174.0"
+    "three": "^0.174.0",
+    "three.meshline": "^1.4.0"
   },
   "devDependencies": {
     "gh-pages": "^6.3.0",

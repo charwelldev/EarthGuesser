@@ -8,17 +8,21 @@
     --font-azerial-mono: "Azerial mono", "azerial-mono";
 
     --color-mint-500: oklch(0.72 0.11 178);
-    --color-bluesky: #0593ff;
+    --color-bluesky: #47afff;
     --color-graysky: #9096a2;
-    --color-cyansky: #0e2f6f;
-    --color-cyansky2: #5659c8
-    --color-lightgray: #d8e0ec;
+    --color-cyansky: #334466;
+    --color-cyansky2: #5659c8 --color-lightgray: #d8e0ec;
     --color-bordergray: #9da5b0;
 
     --color-yellowMobile: #fbf304;
     --color-oceanblue: #62b3f2;
 
-    --color-scenebackgroundcolor: #0f141c;
+    --color-scenebackgroundcolor: #02020d;
+
+    --color-cyancustom: #215b91;
+    --color-cyandark: #133453;
+    --color-whitesoft: #f5f5f7;
+    --color-greycool: #6c6f7f;
 
     --color-customorange: #b39d51;
 
@@ -29,6 +33,7 @@ html {
     height: 100%;
     scroll-behavior: smooth;
     margin: 0px;
+    overflow: hidden;
 }
 
 body {
@@ -42,7 +47,7 @@ body {
     height: 30px;
     border-radius: 50%;
     rotate: 45deg;
-    background: linear-gradient(#FF4E50, #40C0CB) border-box;
+    background: 02020d;
     background-clip: border-box;
 }
 
@@ -50,19 +55,17 @@ body {
     /* Border */
     border: 2px solid transparent;
     border-radius: 50%;
-    background:
-        radial-gradient(circle at center, #0f141c, #0f141c),
-        radial-gradient(circle at top, #0593ff, #0e2f6f);
+    background: url('/textures/flag_set_transparent.png');
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
 
     /* Other styles */
     width: 25px;
     height: 12.5px;
-    rotate: -60deg;
+    rotate: -70deg;
     margin-right: -0.7rem;
     margin-left: -0.7rem;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.25rem;
 }
 
 .oval-gradient-mobile {
@@ -71,7 +74,7 @@ body {
     border-radius: 50%;
     background:
         radial-gradient(circle at center, #000000, #000000),
-        radial-gradient(circle at top, #0593ff, #0e2f6f);
+        radial-gradient(circle at top, #0593ff, #47afff);
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
 
@@ -84,14 +87,14 @@ body {
     margin-bottom: 0.3rem;
 }
 
-#loader {
+.loader {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     display: flex;
-    background-color: rgba(15, 20, 28);
+    background-color: #02020d;
     /* Semi-transparent background */
     justify-content: center;
     align-items: center;
@@ -99,12 +102,28 @@ body {
 
 }
 
+.loaderMobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: #02020d;
+    /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+
+}
+
+
 .spinner {
     /* Border */
     border: 3px solid transparent;
     border-radius: 50%;
     background:
-        radial-gradient(circle at center, #0f141c, #0f141c),
+        radial-gradient(circle at center, #02020d, #02020d),
         radial-gradient(circle at top, #0593ff, #0e2f6f);
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
@@ -114,6 +133,46 @@ body {
     height: 1.5rem;
     rotate: 45deg;
     animation: spin 2s linear infinite;
+}
+
+.spinnerO {
+    position: relative;
+    z-index: 10;
+    /* Border */
+    border: 9px solid transparent;
+    border-radius: 100%;
+    background: radial-gradient(circle at center, #02020d, #02020d), url('/EarthGuesser/textures/flag_set_transparent.png') no-repeat center;
+    background-size: cover;
+    /* or contain */
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+
+    /* Other styles */
+    width: 4.5rem;
+    height: 3.75rem;
+    rotate: 45deg;
+    animation: spin 2s linear infinite;
+}
+
+.rotating-text {
+    display: inline-block;
+    /* shrink to content */
+    transform-origin: center;
+    /* rotate around center */
+    animation: spin 2s linear infinite;
+}
+
+.clip-text {
+    font-size: 4rem;
+
+    background: url('/EarthGuesser/textures/flag_set_transparent2.png') no-repeat center;
+    background-size: cover;
+    /* or contain */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* Keyframes for spinning animation */
@@ -168,17 +227,26 @@ body {
     background-color: #111;
 }
 
+#coordinates {
+    width: 16rem;
+    background-color: #111;
+}
+
 .lil-gui.root {
     display: flex;
     flex-direction: column;
     width: 7rem;
     background-color: #111;
 }
+
 /* Target the main GUI container */
 .lil-gui {
-    width: 7rem; /* Reduce the width (default is often 240px or more) */
-    font-size: 12px; /* Shrink the font size */
-    line-height: 1.2; /* Tighten the line spacing */
+    width: 7rem;
+    /* Reduce the width (default is often 240px or more) */
+    font-size: 12px;
+    /* Shrink the font size */
+    line-height: 1.2;
+    /* Tighten the line spacing */
     background-color: #111;
 }
 
@@ -188,8 +256,10 @@ body {
 
 /* Reduce padding and margins for individual controls */
 .lil-gui .controller {
-    margin-bottom: 2px; /* Reduce spacing between controls */
-    padding: 4px; /* Shrink padding */
+    margin-bottom: 2px;
+    /* Reduce spacing between controls */
+    padding: 4px;
+    /* Shrink padding */
     width: 5rem;
     background-color: #111;
 }
@@ -203,4 +273,49 @@ body {
 /* Style the input fields */
 .lil-gui .widget input {
     width: 1.5rem;
+}
+
+/* Style for popup messages */
+.fadeMessageWrong {
+    color: white;
+    font-size: 7.5rem;
+    font-family: sans-serif;
+    text-shadow: 0 0 10px black;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    /* so it doesn't block clicks */
+    z-index: 100;
+}
+
+.fadeMessageWrongMobile {
+    color: white;
+    font-size: 4rem;
+    font-family: sans-serif;
+    text-shadow: 0 0 10px black;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    /* so it doesn't block clicks */
+    z-index: 100;
+}
+
+.toggleBtn {
+    pointer-events: none;
+}
+
+.pointer_events_auto {
+    pointer-events: auto;
+}
+
+/* add to your CSS */
+.chart-label {
+  position: absolute;
+  left: -0.25rem;        /* left padding like before */
+  transform: translateY(50%); /* centers text on line */
+  font-size: 10px;
+  color: #4b5563;       /* gray-600 */
+  pointer-events: none;
 }

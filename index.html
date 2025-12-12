@@ -2,176 +2,268 @@
 <html>
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Geography guessr game</title>
-  <link rel="icon" href="./src/assets/images/favicon-def.png">
-  <link href="./src/css/output.css" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>The globe game</title>
+    <link rel="icon" href="./src/assets/images/favicon.png">
+    <link href="./src/css/output.css" rel="stylesheet">
 
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
-
-  <script src="/poly2tri.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 
 
 </head>
 
-<body class="font-raleway bg-scenebackgroundcolor">
+<body class="relative flex items-center justify-center min-h-screen bg-center bg-cover bg-no-repeat"
+    style="background-image: url('/assets/welcomeBG.png')">
+    <!-- Blurred overlay -->
+    <div class="absolute inset-0 bg-scenebackgroundcolor/10 backdrop-blur-sm" aria-hidden="true"></div>
 
-  <div class="md:flex md:flex-row bg-scenebackgroundcolor flex-col block" id="main_container">
-
-    <div id="sub_container"
-      class="md:bg-scenebackgroundcolor md:w-1/4 md:max-h-full md:flex md:flex-col md:items-center md:justify-center hidden">
-
-      <div
-        class="p-4 w-full bg-scenebackgroundcolor border-2 border-cyansky border-solid rounded-lg md:flex md:flex-row md:justify-between md:mb-6 ">
-        <div class="flex flex-row md:flex-1 justify-center">
-          <a href="/" class="-m-1.5 p-1.5">
-            <!-- <img class="h-1/3 w-auto" src="./assets/logo-def.png" alt=""> -->
-
-            <ul class="inline-block text-3xl text-transparent bg-conic-180 from-bluesky to-cyansky bg-clip-text">
-              <li class="inline-block">Ge</li>
-              <li class="inline-block oval-gradient"></li>
-              <li class="inline-block">graphy Guessr</li>
-            </ul>
-          </a>
-        </div>
-
-      </div>
-
-      <div
-        class="p-2 w-full bg-scenebackgroundcolor border-2 border-cyansky text-center border-solid rounded-lg flex flex-row justify-between mb-6">
-        <div class="text-xl text-bluesky">
-          Remaining attempts: </div>
-        <div class="text-xl text-red-500" id="countTries">9
-        </div>
-      </div>
-      <div
-        class="overflow-y-clip p-4 w-full bg-scenebackgroundcolor border-2 border-cyansky border-solid rounded-lg md:flex md:flex-col md:justify-between md:mb-6">
-        <div class="text-2xl text-center text-bluesky">
-          Guess each country, on the globe, for each clue</div>
-
-        <!-- <span class="text-4xl text-center bg-gradient-to-t from-gray-600 to-cyansky bg-clip-text text-transparent mt-4"></span> -->
-
-        <div class="flex flex-row justify-center">
-          <div class="flex flex-col justify-center p-2 text-1xl rounded-lg m-2" id="questions">
-            <div class="flex flex-row justify-between">
-              <div id="q0"
-                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
-              </div>
-              <div id="q0a"
-                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white">
-              </div>
-            </div>
-            <div class="flex flex-row justify-between">
-              <div id="q1"
-                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
-              </div>
-              <div id="q1a"
-                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white">
-              </div>
-            </div>
-            <div class="flex flex-row justify-between">
-              <div id="q2"
-                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
-              </div>
-              <div id="q2a"
-                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white">
-              </div>
-            </div>
-            <div class="flex flex-row justify-between">
-              <div id="q3"
-                class="mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-white flex flex-row justify-items-center">
-              </div>
-              <div id="q3a"
-                class="hidden mt-2 mb-2 p-2 rounded-lg border-1 border-amber-50 bg-scenebackgroundcolor text-whiter">
-              </div>
-            </div>
-          </div>
-          <ul class="mt-2 justify-between" id="answers">
-            <!-- Dynamically generated -->
-          </ul>
-        </div>
-        <div id="results"
-          class="text-xl text-center bg-gradient-to-r from-cyansky to-bluesky bg-clip-text text-transparent mt-4 mb-4"
-          style="visibility: hidden;">
-          Score<br> </div>
-      </div>
-      <div
-      class="p-2 w-full bg-scenebackgroundcolor border-2 border-cyansky text-center border-solid rounded-lg flex flex-row justify-between mb-6">
-      <div class="text-xl text-center text-bluesky">
-        Last country selected: </div>
-      <div class="text-xl text-white" id="lastCountrySelected"> - 
-      </div>
-    </div>
-    </div>
-
-
-    <div id="earthCanvas" class="w-full h-full md:w-3/4 relative">
-      <div class="md:hidden absolute  items-center top-0 w-full z-10 bg-scenebackgroundcolor rounded-b-md flex flex-col p-4"
-        id="answers-container">
-        <ul class="inline-block text-3xl text-transparent bg-conic-180 from-bluesky to-cyansky bg-clip-text mb-2">
-          <li class="inline-block">Geography</li>
-          <li class="inline-block oval-gradient-mobile"></li>
-          <li class="inline-block">Guessr</li>
+    <!-- Menu container -->
+    <div
+        class="relative z-10 text-white text-center bg-scenebackgroundcolor/90 backdrop-blur-xl rounded-2xl p-10 shadow-2xl w-[90%] max-w-lg -mt-50">
+        <ul translate="no" class="inline-block mb-4">
+            <li
+                class="inline-block text-4xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                G</li>
+            <li
+                class="inline-block text-4xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                L</li>
+            <li
+                class="inline-block text-4xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                O</li>
+            <li
+                class="inline-block text-4xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                B</li>
+            <li
+                class="inline-block text-4xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                E</li>
+            <span> </span>
+            <li class="inline-block text-4xl text-white">guess</li>
         </ul>
-        <div class="text-xl text-white " id="triesCountMobile">Remaining attempts: 9</div>
-        <div class="text-xl text-white " id="lastCountrySelectedMobile">Last selected country: </div>
-        
-      </div>
-      <div class="absolute top-0 right-0 z-10" id="gui-container"></div>
-      <div id="loader" class="absolute top-0 left-0 w-full h-full flex justify-center items-center z-50 flex-shrink-0">
-        <div class="spinner"></div>
-      </div>
-      <div class="md:hidden absolute bottom-0 w-full z-10 bg-scenebackgroundcolor rounded-tr-sm flex flex-col p-4">
-        <div class="text-2xl text-white mb-4 text-center">Guess each country, for each clue</div>
-        <button id="toggleButton" class="text-xl text-white bg-blue-600 px-4 py-2 mb-2 rounded hover:bg-blue-700">Hide clues</button>
-        <div class="text-md text-black p-2 clue rounded bg-gray-50 m-2" id="clue0"></div>
-        <div class="text-md text-black p-2 clue bg-gray-50 m-2" id="clue1"></div>
-        <div class="text-md text-black p-2 clue bg-gray-50 m-2" id="clue2"></div>
-        <div class="text-md text-black p-2 clue bg-gray-50 m-2" id="clue3"></div>
-        <div class="text-2xl text-white">Score</div>
-        <div class="text-md text-white " id="resultsMobile"></div>
+
+        <div class="flex flex-col items-center mb-6">
+            <div class="flex items-center text-2xl font-semibold mt-6">
+                Choose the game mode
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center">
+            <!-- Button -->
+            <div class="mb-6 flex items-center justify-between gap-3 rounded-2xl p-2 cursor-pointer">
+                <div id="game1"
+                    class="w-60 py-3 rounded-lg font-medium text-lg bg-slate-800 hover:bg-cyan-600 transition-all duration-300 flex flex-row items-center justify-center">
+
+                    <h1 class="">Today's quiz</h1>
+
+                </div>
+            </div>
+
+
+
+            <div class="rounded-2xl p-2 ">
+                <button id="game2"
+                    class=" cursor-pointer w-60 py-3 rounded-lg font-medium text-lg bg-slate-800 hover:bg-slate-600 transition-all duration-300 flex flex-row items-center justify-center">
+                    <div class="relative ml-2 group">
+                        
+                        <h1 class="">Random quiz</h1>
+
+                        <!-- Tooltip -->
+                        <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block
+                        bg-gray-800 text-white text-sm px-3 py-2 rounded shadow-lg whitespace-nowrap z-50">
+                            Will be available soon.
+                        </div>
+
+                    </div>
+                </button>
+                <div class="relative w-60 mx-auto mt-4">
+
+                    <!-- Dropdown Button -->
+                    <button id="continentDropdownBtn"
+                        class=" cursor-pointer w-full bg-slate-800 text-white py-3 px-4 rounded-lg shadow hover:bg-slate-600 flex justify-between items-center ">
+                        <div class="relative ml-2 group">
+                        
+                        <h1>Select region</h1>
+
+                        <!-- Tooltip -->
+                        <div class="absolute left-1/2 transform -translate-x-1/2 bottom-full mb-2 hidden group-hover:block
+                        bg-gray-800 text-white text-sm px-3 py-2 rounded shadow-lg whitespace-nowrap z-50">
+                            Will be available soon.
+                        </div>
+
+                    </div>
+                        
+                        <svg class="w-5 h-5 transition-transform duration-200" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="continentDropdownMenu"
+                        class="absolute w-full bg-slate-900 rounded-lg shadow-lg max-h-0 transition-all duration-300 z-50 overflow-hidden">
+
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            <h1>World</h1>
+                            <img class="size-5" src="/assets/earth.png">
+                        </button>
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            Africa
+                            <img class="w-5 h-5" src="/assets/africa.png" alt="">
+                        </button>
+
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            Europe
+                            <img class="w-5 h-5" src="/assets/europe.png" alt="">
+                        </button>
+
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            Asia
+                            <img class="w-5 h-5" src="/assets/asia.png" alt="">
+                        </button>
+
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            North America
+                            <img class="w-5 h-5" src="/assets/northamerica.png" alt="">
+                        </button>
+
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            South America
+                            <img class="w-5 h-5" src="/assets/southamerica.png" alt="">
+                        </button>
+
+                        <button
+                            class="w-full text-left px-4 py-3 hover:bg-cyan-600 flex justify-between items-center text-white">
+                            Oceania
+                            <img class="w-5 h-5" src="/assets/oceania.png" alt="">
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="w-full mt-4 md:mt-14 gap-4 group">
+
+
+            </div>
+            <div class="relative mt-2 group inline-block">
+                <div class="md:text-md text-sm md:mb-4 md:mt-4">developed by <span class="font-bold">charwelldev</span>
+                </div>
+                <!-- Hover element -->
+                <div class="flex flex-row justify-center items-center mt-4">
+                    <h1 class="mr-4">Credits</h1>
+                    <img class="inline-block text-white h-6 w-6 rounded cursor-pointer "
+                        src="/assets/elements.png"></img>
+
+                </div>
+
+                <!-- Tooltip -->
+                <div class="absolute group mb-2 hidden group-hover:block
+                        bg-gray-800 text-white text-sm px-3 py-2 rounded shadow-lg whitespace-nowrap z-50">
+
+                    <div>Icons <a class="text-cyan-500" href="https://www.flaticon.es/iconos-gratis/continente"
+                            title="continente iconos">amoghdesign - Flaticon</a> and <a class="text-cyan-500"
+                            href="https://www.flaticon.es/iconos-gratis/info" title="info iconos">Anggara - Flaticon</a>
+                        </br></div></br>
+                    <div>Model <a class="text-cyan-500" href="/EarthGuesser/license.poly2tri.txt"
+                            title="license poly2tri">&copy; 2009-2018 Poly2Tri </a>and <a class="text-cyan-500"
+                            href="https://github.com/meshpro/pygalmesh?tab=GPL-3.0-1-ov-file"
+                            title="pygal mesh">pygalmesh</a></div></br>
+                    <div>3D Web library <a class="text-cyan-500" href="https://threejs.org/" title="threeJS">threeJS</a>
+                    </div></br>
+                </div>
+
+            </div>
+
+
+        </div>
     </div>
-    </div>
 
-  </div>
-  <script type="module" src="src/main.js"></script>
-
-</body>
-<script>
-
-  const toggleButton = document.getElementById('toggleButton');
-    const clues = document.querySelectorAll('.clue');
-    let isHidden = false;
-
-    toggleButton.addEventListener('click', () => {
-        isHidden = !isHidden;
-        clues.forEach(clue => {
-            clue.style.display = isHidden ? 'none' : 'block';
+    <script type="module">
+        document.getElementById('game1').addEventListener('click', () => {
+            window.location.href = '/EarthGuesser/scene.html#quiz';
         });
-        toggleButton.textContent = isHidden ? 'Show clues' : 'Hide clues';
-    });
 
-  // Scroll to 3D Canvas
-  function scrollToQuestions() {
-    const yOffset = 0;
-    const element = document.getElementById("sub_container");
-    const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-    window.scrollTo({ top: y, behavior: 'smooth' })
-    //document.getElementById("earthCanvas").scrollIntoView({block: "start", behavior: "smooth"});
-  }
-
-</script>
-
-<!-- <script src="https://rawgithub.com/mrdoob/three.js/r104/examples/js/utils/BufferGeometryUtils.js"></script> -->
-<!-- <script src="https://unpkg.com/poly2tri@0.5.1/dist/poly2tri.min.js"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/poly2tri@0.5.1/dist/poly2tri.min.js"></script> -->
+        document.getElementById('game2').addEventListener('click', () => {
+            var continent = document.getElementById("continentDropdownBtn");
+        });
 
 
+        const dropdownBtn = document.getElementById("continentDropdownBtn");
+        const dropdownMenu = document.getElementById("continentDropdownMenu");
+
+        // Toggle menu open/close and position
+        dropdownBtn.addEventListener("click", () => {
+            const isOpen = dropdownMenu.style.maxHeight && dropdownMenu.style.maxHeight !== "0px";
+
+            if (window.innerHeight < 668) {
+                dropdownMenu.style.bottom = "100%";
+                dropdownMenu.style.top = "auto";
+            } else {
+                dropdownMenu.style.top = "100%";
+                dropdownMenu.style.bottom = "auto";
+            }
+
+            dropdownMenu.style.maxHeight = isOpen ? "0px" : dropdownMenu.scrollHeight + "px";
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.style.maxHeight = "0px";
+            }
+        });
+
+        // Map continent names to icon URLs
+        const continentIcons = {
+            "Africa": "/EarthGuesser/assets/africa.png",
+            "North America": "/EarthGuesser/assets/northamerica.png",
+            "South America": "/EarthGuesser/assets/southamerica.png",
+            "Europe": "/EarthGuesser/assets/europe.png",
+            "Asia": "/EarthGuesser/assets/asia.png",
+            "Oceania": "/EarthGuesser/assets/oceania.png",
+            "World": "/EarthGuesser/assets/earth.png"
+        };
+
+        // Update button text when selecting a continent
+        dropdownMenu.querySelectorAll("button").forEach(item => {
+            item.addEventListener("click", () => {
+                // Get continent name
+                const continentName = item.querySelector("span")?.textContent || item.textContent.trim();
+
+                // Clear existing button content
+                dropdownBtn.innerHTML = "";
+
+                // Create text node
+                const textNode = document.createTextNode(continentName + " ");
+                dropdownBtn.appendChild(textNode);
+
+                // Create image element
+                const icon = document.createElement("img");
+                icon.src = continentIcons[continentName] || "";
+                icon.alt = continentName;
+                icon.className = "w-5 h-5 inline-block"; // Tailwind classes
+                dropdownBtn.appendChild(icon);
+                console.log(icon);
+
+                // Close menu
+                dropdownMenu.style.maxHeight = "0px";
+            });
+        });
+
+
+
+
+    </script>
+</body>
 
 </html>
