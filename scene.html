@@ -1,0 +1,400 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>The globe game</title>
+  <link rel="icon" href="./src/assets/images/favicon.png">
+  <link href="./src/css/output.css" rel="stylesheet">
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <script src="/poly2tri.min.js"></script>
+
+
+</head>
+
+<body class="font-raleway w-screen h-screen">
+
+  <div class="relative w-screen h-screen md:w-auto md:h-auto md:flex md:flex-row flex-col block" id="main_container">
+    <div id="earthCanvas" class="w-auto h-full md:w-full relative bg-scenebackgroundcolor/90 backdrop-blur-xl">
+
+      <div id="sub_container"
+        class="z-90 bottom-0 absolute
+               text-black rounded-tl-lg px-6 py-3
+              opacity-100 pointer-events-autoh-4/10 w-full transition-transform duration-300 ease-out overflow-hidden
+              md:hidden md:absolute md:bottom-0 md:right-0 bg-whitesoft/90
+              md:bg-whitesoft/90 md:backdrop-blur-xl md:rounded-tl-lg md:px-6 md:py-3
+              md:opacity-100 md:pointer-events-auto md:h-3/5 md:w-5/10 md:transition-transform md:duration-300 md:ease-out md:overflow-hidden md:border-t-1 md:border-l-1 md:border-scenebackgroundcolor">
+        <div class="mt-2 z-10 flex flex-row items-center pointer-events-auto">
+          <button id="toggleBtn" class="bg-slate-100 border border-black
+                 backdrop-blur-md px-4 py-2 rounded-lg
+                 shadow-md hover:bg-white/10 transition z-[999]">
+            Hide
+          </button>
+          <div translate="no" class="flex-1 flex justify-center">
+            <!-- <img class="h-1/3 w-auto" src="./assets/logo-def.png" alt=""> -->
+
+            <ul class="inline-block">
+
+              <li class="inline-block md:text-4xl text-2xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center
+                ">
+                G</li>
+              <li
+                class="inline-block md:text-4xl text-2xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                L</li>
+              <li
+                class="inline-block md:text-4xl text-2xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                O</li>
+              <li
+                class="inline-block md:text-4xl text-2xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                B</li>
+              <li
+                class="inline-block md:text-4xl text-2xl bg-[url('/EarthGuesser/textures/flag_set_transparent.png')] bg-clip-text text-transparent bg-cover bg-center">
+                E</li>
+              <span> </span>
+              <li class="inline-block md:text-4xl text-2xl md:mb-4">guess</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="sub_container_content" class="h-full flex-1 flex flex-col items-center justify-start">
+
+          <div id="results" class="hidden md:text-2xl text-lg text-center text-black mt-4 mb-2">
+            <div class="flex-1 min-h-0 flex flex-col">
+              <div class="inline-block h-auto">
+                <div class="inline-block md:mb-6"><span id="congratulations"></span>, your score is </div>
+                <div id="aciertos" class="inline-block"></div>
+                <div class="inline-block">of</div>
+                <div id="total" class="inline-block"></div>
+                <div id="globalscoretext" class="text-black md:text-white">Global score (click on the flags to locate)
+                </div>
+              </div>
+              <div class="flex justify-center p-4">
+                <div class="md:grid md:grid-cols-[minmax(100px,auto)_1fr] md:gap-x-8 md:items-center">
+                  <h1 class="hidden md:block md:col-start-1 md:row-start-1 md:text-3xl md:font-bold">%</h1>
+                  <h1 class="hidden md:block md:col-start-1 md:row-start-2 md:text-2xl md:font-bold">Total answers</h1>
+                  <h1 class="hidden md:block md:col-start-1 md:row-start-3 md:font-bold">Results</h1>
+                  <div class="col-start-2 row-start-1 ">
+                    <div id="chart"
+                      class="relative grid grid-cols-5 gap-4 items-end h-60 w-full">
+
+                      <!-- Label/Lines overlay -->
+                      <div id="chart-labels" class="absolute inset-0 pointer-events-none flex flex-col justify-between items-start 
+                        text-[10px] text-gray-600 pl-1 z-20">
+                      </div>
+
+                      <div id="chart-lines"
+                        class="absolute inset-0 pointer-events-none flex flex-col justify-between z-10">
+                      </div>
+                    </div>
+                    
+                  </div>
+                  <div class="col-start-2 row-start-2 bg-whitesoft md:bg-blue-950 rounded-2xl">
+                    <div id="totals" class="grid grid-cols-5 gap-4 md:grid md:grid-cols-5 md:gap-4 md:h-auto h-auto">
+                    </div>
+                  </div>
+                  <div id="imgResults"
+                    class="col-start-2 row-start-3 grid grid-cols-5 gap-4  min-h-0 mt-2 md:mt-0 md:grid md:grid-cols-5 md:gap-4 md:h-auto h-auto justify-items-center">
+                    <img src="" class="p-2 w-16 h-10 md:w-20 md:h-15 rounded-lg cursor-pointer" />
+                    <img src="" class="p-2 w-16 h-10 md:w-20 md:h-15 rounded-lg cursor-pointer" />
+                    <img src="" class="p-2 w-16 h-10 md:w-20 md:h-15 rounded-lg cursor-pointer" />
+                    <img src="" class="p-2 w-16 h-10 md:w-20 md:h-15 rounded-lg cursor-pointer" />
+                    <img src="" class="p-2 w-16 h-10 md:w-20 md:h-15 rounded-lg cursor-pointer" />
+                  </div>
+                  <div id="nameResults"
+                    class="col-start-2 row-start-4 grid grid-cols-5 gap-2 text-xs min-h-0 md:text-sm">
+                    <h1 class="p-1 text-center break-words"></h1>
+                    <h1 class="p-1 text-center break-words"></h1>
+                    <h1 class="p-1 text-center break-words"></h1>
+                    <h1 class="p-1 text-center break-words"></h1>
+                    <h1 class="p-1 text-center break-words"></h1>
+                  </div>
+                </div>
+              </div>
+              <!-- <img class="absolute bottom-0 left-0 p-4 h-20 w-35" src="/assets/clickinflag.png" alt="click" /> -->
+
+            </div>
+          </div>
+
+          <div id="gameStats" class="relative rounded-2xl h-full max-h-full flex flex-col items-center">
+            <div id="gameStatesResume"
+              class="text-lg md:text-xl p-2 w-full rounded-lg text-center flex flex-row justify-between md:mb-12 md:mt-2 align-top items-center text-black">
+              <div class="flex flex-row w-[1/4] items-center">
+                <div id="errors" class="p-2">
+                  Errors Left</div>
+                <div class="p-2 text-red-600 " id="countTries">5
+                </div>
+              </div>
+              <div
+                class="w-3/4 rounded-lg border border-white-50 backdrop-blur-xl/10 justify-items-center text-center bg-whitesoft/70 text-black"
+                id="guesses">
+                <div id="q0" class="p-2 w-full">
+                </div>
+                <div id="q1" class="hidden p-2 w-full">
+                </div>
+                <div id="q2" class="hidden p-2 w-full">
+                </div>
+                <div id="q3" class="hidden p-2 w-full">
+                </div>
+                <div id="q4" class="hidden p-2 w-full">
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2 overflow-y-clip w-full rounded-lg md:flex md:flex-col md:justify-between md:mb-6">
+              <!-- <span class="text-4xl text-center bg-gradient-to-t from-gray-600 to-cyansky bg-clip-text text-transparent mt-4"></span> -->
+
+              <!-- Carousel -->
+              <div class="relative w-auto h-auto overflow-hidden rounded-lg justify-center">
+                <div class="relative flex transition-transform duration-700 ease-in-out" id="carousel">
+                  <div class="w-full h-auto flex-shrink-0 flex flex-col items-center justify-center">
+                    <img id="q0-img" class="h-25 w-40 md:h-50 md:w-75 mt-2 mb-2 p-2 rounded-lg " />
+                    <div id="q0a" class="hidden mt-2 mb-2 p-2 bg-cyansky/10 backdrop-blur-xl/10 ">
+                    </div>
+                  </div>
+                  <div class="w-full h-auto flex-shrink-0 flex flex-col items-center justify-center">
+                    <img id="q1-img" class="h-25 w-40 md:h-50 md:w-75 mt-2 mb-2 p-2 rounded-lg" />
+                    <div id="q1a" class="hidden mt-2 mb-2 p-2 rounded-lg border border-white-50   backdrop-blur-xl">
+                    </div>
+                  </div>
+                  <div class="w-full h-auto flex-shrink-0 flex flex-col items-center justify-center">
+                    <img id="q2-img" class="h-25 w-40 md:h-50 md:w-75 mt-2 mb-2 p-2 rounded-lg" />
+                    <div id="q2a" class="hidden mt-2 mb-2 p-2 rounded-lg border border-white-50   backdrop-blur-xl">
+                    </div>
+                  </div>
+                  <div class="w-full h-auto flex-shrink-0 flex flex-col items-center justify-center">
+                    <img id="q3-img" class="h-25 w-40 md:h-50 md:w-75 mt-2 mb-2 p-2 rounded-lg" />
+                    <div id="q3a"
+                      class="hidden mt-2 mb-2 p-2 rounded-lg border border-white-50 bg-scenebackgroundcolor/30 backdrop-blur-xl">
+                    </div>
+                  </div>
+                  <div class="w-full h-auto flex-shrink-0 flex flex-col items-center justify-center">
+                    <img id="q4-img" class="h-25 w-40 md:h-50 md:w-75 mt-2 mb-2 p-2 rounded-lg " />
+                    <div id="q4a" class="hidden mt-2 mb-2 p-2 bg-cyansky/10 backdrop-blur-xl/10">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Navigation Buttons -->
+              <div class="flex flex-row justify-between items-center mt-6 mx-4">
+                <button id="prev"
+                  class="ml-f2 bg-white/90 hover:bg-bluesky/40 text-black rounded-full h-8 w-8 flex items-center justify-center">
+                  &#8592;
+                </button>
+                <div id="dots" class="flex flex-1 justify-between mx-6 px-6">
+                  <span
+                    class="w-3 h-3 bg-white border border-white-50 rounded-full transition-colors duration-300"></span>
+                  <span
+                    class="w-3 h-3 bg-cyansky border border-white-50 rounded-full transition-colors duration-300"></span>
+                  <span
+                    class="w-3 h-3 bg-cyansky border border-white-50 rounded-full transition-colors duration-300"></span>
+                  <span
+                    class="w-3 h-3 bg-cyansky border border-white-50 rounded-full transition-colors duration-300"></span>
+                  <span
+                    class="w-3 h-3 bg-cyansky border border-white-50 rounded-full transition-colors duration-300"></span>
+                </div>
+                <button id="next"
+                  class="mr-2 bg-white/90 hover:bg-bluesky/40 text-black rounded-full h-8 w-8 flex items-center justify-center">
+                  &#8594;
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="absolute bottom-0 left-0 z-50 bg-scenebackgroundcolor/90 backdrop-blur-xl/10 text-white"
+        id="coordinates">
+      </div>
+      <div class="absolute top-0 right-0 z-50" id="gui-container"></div>
+      <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-scenebackgroundcolor">
+
+        <div class="spinnerO"></div>
+
+        <div id="loaderId" class=" mt-4 text-lg relative z-20 text-white">
+          Loading...
+        </div>
+
+      </div>
+      <div id="popMessages"
+        class="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center z-50 flex-shrink-0 pointer-events-none">
+        <div id="errorCountMessage" class="fadeMessageWrongMobile md:fadeMessageWrong"></div>
+        <div id="fadeMessage" class="fadeMessageWrongMobile md:fadeMessageWrong">Wrong Country!</div>
+      </div>
+
+
+
+    </div>
+  </div>
+  <script type="module" src="src/main.js"></script>
+
+</body>
+<script>
+
+  /*   const toggleButton = document.getElementById('toggleButton');
+    const clues = document.querySelectorAll('.clue');
+    let isHidden = false;
+  
+    toggleButton.addEventListener('click', () => {
+      isHidden = !isHidden;
+      clues.forEach(clue => {
+        clue.style.display = isHidden ? 'none' : 'block';
+      });
+      toggleButton.textContent = isHidden ? 'Expand ↑' : 'Hide ↓';
+    }); */
+
+  const subcontainer = document.getElementById("sub_container");
+  const button = document.getElementById("toggleBtn");
+
+  window.isOpen = true;
+
+  button.addEventListener("click", () => {
+
+    isOpen = !isOpen;
+
+    console.log(window.zoom);
+    if (isOpen) {
+      subcontainer.style.transform = "translateY(0)";
+      //subcontainerContent.style.transform = "translateY(0)";
+      button.textContent = "Hide";
+
+    } else {
+      // Height of the top bar (visible section)
+      var headerHeight = 27;
+      if (window.isMobile) headerHeight = 40;
+
+      // Slide overlay down but keep the top visible
+      subcontainer.style.transform = `translateY(calc(100% - ${headerHeight}%))`;
+      //subcontainerContent.style.transform = `translateY(calc(100% - ${headerHeight}%))`;
+      button.textContent = "Expand";
+    }
+  });
+
+  let _zoom = 1;  // backing variable
+
+  const results = document.getElementById("results");
+  const gameStatesResume = document.getElementById("gameStatesResume");
+  const guesses = document.getElementById("guesses");
+  const globalscoretext = document.getElementById("globalscoretext");
+  Object.defineProperty(window, 'zoom', {
+    get() {
+      return _zoom;
+    },
+    set(value) {
+      _zoom = value;
+      // this code runs whenever window.zoom changes
+      //console.log("Zoom changed to", value);
+      if (value < 0.635) {
+        /* subcontainer.classList.remove("md:text-white");
+        subcontainer.classList.add("md:text-black");
+        subcontainer.classList.remove("md:bg-scenebackgroundcolor/90");
+        subcontainer.classList.add("md:bg-whitesoft/90");
+        //subcontainer.classList.remove("border-white-50");
+        //subcontainer.classList.add("boder-black-50");
+        subcontainer.classList.remove("md:border-whitesoft");
+        subcontainer.classList.add("md:border-scenebackgroundcolor");
+        results.classList.remove("md:text-white");
+        results.classList.add("md:text-black");
+        button.classList.remove("md:bg-slate-950");
+        button.classList.add("md:bg-slate-100");
+        button.classList.add("border-black");
+        button.classList.remove("border-white");
+        gameStatesResume.classList.add("text-black");
+        gameStatesResume.classList.remove("text-white");
+        guesses.classList.remove("bg-slate-950");
+        guesses.classList.add("bg-whitesoft/70");
+        guesses.classList.remove("text-white");
+        guesses.classList.add("text-black");
+        globalscoretext.classList.add("text-black");
+        globalscoretext.classList.remove("text-white"); */
+      } else {
+        subcontainer.classList.add("md:text-white");
+        subcontainer.classList.remove("md:text-black");
+        subcontainer.classList.add("md:bg-scenebackgroundcolor/90");
+        subcontainer.classList.remove("md:bg-whitesoft/90");
+        /* subcontainer.classList.add("border-white-50");
+        subcontainer.classList.remove("boder-black-50"); */
+        subcontainer.classList.add("md:border-whitesoft");
+        subcontainer.classList.remove("md:border-scenebackgroundcolor");
+        results.classList.add("md:text-white");
+        results.classList.remove("md:text-black");
+        button.classList.add("md:bg-slate-950");
+        button.classList.remove("md:bg-slate-100");
+        button.classList.remove("border-black");
+        button.classList.add("border-white");
+        gameStatesResume.classList.add("text-white");
+        gameStatesResume.classList.remove("text-black");
+        guesses.classList.add("bg-slate-950");
+        guesses.classList.remove("bg-whitesoft/70");
+        guesses.classList.add("text-white");
+        guesses.classList.remove("text-black");
+        /* if (!window.isMobile) {
+          globalscoretext.classList.remove("text-black");
+          globalscoretext.classList.add("text-white");
+        } */
+      }
+
+    }
+  });
+
+  let _target = 0.85;
+
+  Object.defineProperty(window, 'target', {
+    get() {
+
+      return _target;
+    },
+    set(value) {
+      // console.log(_target);
+      _target = value;
+      // this code runs whenever window.zoom changes
+      var headerHeight = 27;
+      if (window.isMobile) headerHeight = 40;
+      if (value == 'CANVAS') {
+        subcontainer.style.transform = `translateY(calc(100% - ${headerHeight}%))`;
+        button.textContent = "Expand";
+        isOpen = false;
+      } else if (value == 'DIV') {
+        subcontainer.style.transform = `translateY(0)`;
+        button.textContent = "Hide";
+        isOpen = true;
+      }
+
+    }
+  });
+
+  window.expandSubContainer = function () {
+    if (!isOpen) {
+      subcontainer.style.transform = "translateY(0)";
+      button.textContent = "Hide";
+      isOpen = true;
+    }
+  }
+
+  window.hideSubContainer = function () {
+    const subcontainer = document.getElementById("sub_container");
+    var headerHeight = 27;
+    if (window.isMobile) headerHeight = 40;
+    if (isOpen) {
+      subcontainer.style.transform = `translateY(calc(100% - ${headerHeight}%))`;
+      button.textContent = "Expand";
+      isOpen = false;
+    }
+  }
+
+  // Optional: auto-play every 5s
+  // setInterval(() => { index = (index + 1) % total; updateCarousel(); }, 5000);
+</script>
+
+
+</html>
